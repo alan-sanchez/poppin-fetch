@@ -11,6 +11,9 @@ from moveit_python import MoveGroupInterface, PlanningSceneInterface
 #          The ONLY objects the collision detection software is aware
 #          of are itself & the floor.
 
+# class TorsoArm(object):
+    
+
 
 
 if __name__ == '__main__':
@@ -38,13 +41,9 @@ if __name__ == '__main__':
                    "elbow_flex_joint", "forearm_roll_joint",
                    "wrist_flex_joint", "wrist_roll_joint"]
     # Lists of joint angles in the same order as in joint_names
-    disco_poses = [[0.0, 1.5, -0.6, 3.0, 1.0, 3.0, 1.0, 3.0],
-                   [0.133, 0.8, 0.75, 0.0, -2.0, 0.0, 2.0, 0.0],
-                   [0.266, -0.8, 0.0, 0.0, 2.0, 0.0, -2.0, 0.0],
-                   [0.385, -1.5, 1.1, -3.0, -0.5, -3.0, -1.0, -3.0],
-                   [0.266, -0.8, 0.0, 0.0, 2.0, 0.0, -2.0, 0.0],
-                   [0.133, 0.8, 0.75, 0.0, -2.0, 0.0, 2.0, 0.0],
-                   [0.0, 1.5, -0.6, 3.0, 1.0, 3.0, 1.0, 3.0]]
+    disco_poses = [[0.29, 1.17, 1.52, 1.47, -0.80, 0.00, 0.00, 0.00],
+                   [0.29, 1.17, 1.52, 1.47, -1.57, 0.00, 0.00, 0.00],
+                   [0.29, 1.46, 1.52, 1.47, -1.57, 0.00, 0.00, 0.00]]
 
     for pose in disco_poses:
         if rospy.is_shutdown():
