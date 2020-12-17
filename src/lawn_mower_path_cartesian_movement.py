@@ -477,24 +477,24 @@ def main():
     raw_input("Move to initial position")
     arm_with_torso_action.init_pose()
 
-    # raw_input( "======== Press 'Enter' to Move to bed. ")
-    # rospy.loginfo("Moving to coffee table...")
-    # # move_base.goto(-6.0, -3.9, .319)
-    # move_base.goto(-.25, 1.9, 1.7)
-    # cartesian_plan_bed, fraction = path.plan_cartesian_path_bed()
-    # path.execute_plan(cartesian_plan_bed)
-    # raw_input("Move to initial position")
-    # arm_with_torso_action.init_pose()
-    # #
+    raw_input( "======== Press 'Enter' to Move to bed. ")
+    rospy.loginfo("Moving to coffee table...")
+    # move_base.goto(-6.0, -3.9, .319)
+    move_base.goto(-.25, 1.9, 1.7)
+    cartesian_plan_bed, fraction = path.plan_cartesian_path_bed()
+    path.execute_plan(cartesian_plan_bed)
+    raw_input("Move to initial position")
+    arm_with_torso_action.init_pose()
     #
-    # raw_input( "======== Press 'Enter' to Move to other the side of the bed. ")
-    # rospy.loginfo("Moving to coffee table...")
-    # move_base.goto(-2.25, 1.45, 1.65)
-    # move_base.goto(-2, 3.60, 0.09)
-    # cartesian_plan_chair, fraction = path.plan_cartesian_path_chair()
-    # path.execute_plan(cartesian_plan_chair)
-    # raw_input("Move to initial position")
-    # arm_with_torso_action.init_pose()
+
+    raw_input( "======== Press 'Enter' to Move to other the side of the bed. ")
+    rospy.loginfo("Moving to coffee table...")
+    move_base.goto(-2.25, 1.45, 1.65)
+    move_base.goto(-2, 3.60, 0.09)
+    cartesian_plan_chair, fraction = path.plan_cartesian_path_chair()
+    path.execute_plan(cartesian_plan_chair)
+    raw_input("Move to initial position")
+    arm_with_torso_action.init_pose()
 
 
   except rospy.ROSInterruptException:
