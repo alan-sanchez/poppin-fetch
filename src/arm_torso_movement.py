@@ -9,6 +9,7 @@ from moveit_python import (MoveGroupInterface,
                            PlanningSceneInterface,
                            PickPlaceInterface)
 from moveit_python.geometry import rotate_pose_msg_by_euler_angles
+from moveit_python import PlanningSceneInterface
 
 from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
 from control_msgs.msg import PointHeadAction, PointHeadGoal
@@ -29,7 +30,9 @@ class FollowTrajectoryClient(object):
         self.joint_names = ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
 
-    def move_to(self, positions, duration=5.0):
+
+
+    def move_to(self, positions, duration=1):
         if len(self.joint_names) != len(positions):
             print("Invalid trajectory position")
             return False
@@ -42,7 +45,9 @@ class FollowTrajectoryClient(object):
         trajectory.points[0].time_from_start = rospy.Duration(duration)
         follow_goal = FollowJointTrajectoryGoal()
         follow_goal.trajectory = trajectory
-
+        scene = PlanningSceneInterface("base_link")
+        scene.removeCollisionObject("keepout")
+        scene.addBox("keepout", 0.2, 0.5, 0.05, 0.15, 0.0, 0.375)
         self.client.send_goal(follow_goal)
         self.client.wait_for_result()
 
@@ -75,7 +80,25 @@ if __name__ == "__main__":
     while not rospy.Time.now():
         pass
 
+# ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
+# "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
     # Setup clients
     body_action = FollowTrajectoryClient()
     head_action = PointHeadClient()
-    body_action.move_to([0.29, 1.17, 1.52, 1.47, -0.80, 0.00, 0.00, 0.00])
+    body_action.move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], duration =  5)
+
+    body_action.move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], duration = .8)
+    body_action.move_to([0.29, 1.17, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = .8)
+    body_action.move_to([0.29, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = .8)
+
+    body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], duration =  3)
+    body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  0.00, -1.57, 0.00], duration = .8)
+    body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  1.57, -1.57, 0.00], duration = .8)
+    body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  3.12, -1.57, 0.00], duration = .8)
+    body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], duration = .8)
+    body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  1.57, -1.57, 0.00], duration = 1.2)
+    # body_action.move_to([0.29, 1.55, 0.00, 1.57, -1.56,  1.57, -1.57, 0.00], duration = .8)
+
+    body_action.move_to([0.29, 0.60, 0.00, 1.57, -2.16,  1.57, -1.57, 0.00], duration =  3)
+    body_action.move_to([0.29, 0.60, 0.00, 1.57, -2.16,  1.57,  0.00, 0.00], duration =  .8)
+    body_action.move_to([0.29, 1.32, 1.40, -0.20, 1.72,  0.00,  1.66, 0.00], duration =  3)
