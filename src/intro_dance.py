@@ -24,8 +24,17 @@ class FollowTrajectoryClient(object):
 
     def __init__(self):
         rospy.loginfo("Waiting for MoveIt...")
-        self.client = MoveGroupInterface("arm_with_torso", "base_link")
+        self.safe_client = MoveGroupInterface("arm_with_torso", "base_link")
         rospy.loginfo("...connected")
+
+        self.fast_client = actionlib.SimpleActionClient("/arm_with_torso_controller/follow_joint_trajectory" ,
+                                                   FollowJointTrajectoryAction)
+        rospy.loginfo("Waiting for arm_with_torso...")
+        self.fast_client.wait_for_server()
+        self.joint_names = ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
+                  "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
+
+
 
         # Padding does not work (especially for self collisions)
         # So we are adding a box above the base of the robot
@@ -33,18 +42,36 @@ class FollowTrajectoryClient(object):
         self.scene.removeCollisionObject("keepout")
         self.scene.addBox("keepout", 0.2, 0.5, 0.05, 0.15, 0.0, 0.375)
 
-    def move_to(self, positions, velocity=1):
+    def safe_move_to(self, positions, velocity=1):
         joints = ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
 
         while not rospy.is_shutdown():
-            result = self.client.moveToJointPosition(joints,
+            result = self.safe_client.moveToJointPosition(joints,
                                                      positions,
                                                      0.0,
                                                      max_velocity_scaling_factor=velocity)
             if result and result.error_code.val == MoveItErrorCodes.SUCCESS:
                 self.scene.removeCollisionObject("keepout")
                 return
+
+    def fast_move_to(self,positions, duration = 1):
+        if len(self.joint_names) != len(positions):
+            print("Invalid trajectory position")
+            return False
+        trajectory = JointTrajectory()
+        trajectory.joint_names = self.joint_names
+        trajectory.points.append(JointTrajectoryPoint())
+        trajectory.points[0].positions = positions
+        trajectory.points[0].velocities = [0.0 for _ in positions]
+        trajectory.points[0].accelerations = [0.0 for _ in positions]
+        trajectory.points[0].time_from_start = rospy.Duration(duration)
+        follow_goal = FollowJointTrajectoryGoal()
+        follow_goal.trajectory = trajectory
+
+        self.fast_client.send_goal(follow_goal)
+        self.fast_client.wait_for_result()
+
 
 # Point the head using controller
 class PointHeadClient(object):
@@ -54,7 +81,7 @@ class PointHeadClient(object):
         rospy.loginfo("Waiting for head_controller...")
         self.client.wait_for_server()
 
-    def look_at(self, x, y, z, frame, duration=1.0):
+    def look_at(self, x, y, z, frame = "base_link", duration=1.0):
         goal = PointHeadGoal()
         goal.target.header.stamp = rospy.Time.now()
         goal.target.header.frame_id = frame
@@ -64,6 +91,8 @@ class PointHeadClient(object):
         goal.min_duration = rospy.Duration(duration)
         self.client.send_goal(goal)
         self.client.wait_for_result()
+
+
 
 class FootWork(object):
 
@@ -98,6 +127,7 @@ if __name__ == "__main__":
     # Create a node
     rospy.init_node("intro_dance", anonymous = False)
 
+
     # Make sure sim time is working
     while not rospy.Time.now():
         pass
@@ -108,27 +138,43 @@ if __name__ == "__main__":
     head_action = PointHeadClient()
     base_action = FootWork()
 
-    
-    # body_action.move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], velocity = 0.5)
-    #
-    # body_action.move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], velocity = 1.0)
-    # body_action.move_to([0.29, 1.17, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], velocity = 1.0)
-    # body_action.move_to([0.29, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], velocity = 1.0)
-
-    # base_action.left_turn(5)
-    # base_action.right_turn(5)
-    # base_action.left_turn(10)
-    # base_action.right_turn(25)
+    # init configuration
+    head_action.look_at(0.0,0.0,0.0, duration = 1)
+    body_action.safe_move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], velocity = .2)
 
 
-    # body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], velocity = 1.0)
-    # body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  0.00, -1.57, 0.00], velocity = 1.0)
-    # body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  1.57, -1.57, 0.00], velocity = 1.0)
-    # body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  3.12, -1.57, 0.00], velocity = 1.0)
-    # body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], velocity = 1.0)
-    # body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00,  1.57, -1.57, 0.00], velocity = 1.0)
-    # # body_action.move_to([0.29, 1.55, 0.00, 1.57, -1.56,  1.57, -1.57, 0.00], duration = .8)
-    #
-    # body_action.move_to([0.29, 0.60, 0.00, 1.57, -2.16,  1.57, -1.57, 0.00], velocity =  1.0)
-    # body_action.move_to([0.29, 0.60, 0.00, 1.57, -2.16,  1.57,  0.00, 0.00], velocity =  1.0)
-    # body_action.move_to([0.29, 1.32, 1.40, -0.20, 1.72,  0.00,  1.66, 0.00], velocity =  .5)
+    # Begin Movements
+    head_action.look_at(1.0,0.0,1.3, duration = .5)
+
+
+    body_action.fast_move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.29, 1.17, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.29, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
+
+    base_action.left_turn(8)
+    base_action.right_turn(10)
+    base_action.left_turn(10)
+    base_action.right_turn(20)
+    rospy.sleep(1)
+    base_action.left_turn(12)
+    body_action.fast_move_to([0.31, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
+
+    head_action.look_at(0.1,1.0,1.3, duration = .5)
+
+
+    body_action.safe_move_to([0.31, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], velocity = 1.0)
+    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  0.00, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  1.57, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  3.12, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00, -1.63, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  1.63, -1.57, 0.00], duration = 2.0)
+
+    rospy.sleep(.2)
+    head_action.look_at(1.0,0.0,1.3, duration = .7)
+
+    body_action.fast_move_to([0.31, 0.60, 0.00, 1.57, -2.16,  1.57, -1.57, 0.00], duration =  1.5)
+    body_action.fast_move_to([0.31, 0.60, 0.00, 1.57, -2.16,  1.57,  0.00, 0.00], duration =  1.0)
+    body_action.fast_move_to([0.31, 1.56, 0.00, 1.57, -1.57,  1.57,  0.00, 0.00], duration =  1.0)
+    body_action.fast_move_to([0.27, 1.56, 0.00, 1.57, -1.57,  1.57,  0.00, 0.00], duration =  1.0)
+
+    head_action.look_at(0.0,0.0,0.0, duration = .5)
