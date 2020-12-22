@@ -140,16 +140,16 @@ if __name__ == "__main__":
 
     # init configuration
     head_action.look_at(0.0,0.0,0.0, duration = 1)
-    body_action.safe_move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], velocity = .2)
+    body_action.safe_move_to([0.40, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], velocity = .2)
 
 
     # Begin Movements
     head_action.look_at(1.0,0.0,1.3, duration = .5)
 
 
-    body_action.fast_move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], duration = 1.0)
-    body_action.fast_move_to([0.29, 1.17, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
-    body_action.fast_move_to([0.29, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.40, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.40, 1.17, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.40, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
 
     base_action.left_turn(8)
     base_action.right_turn(10)
@@ -157,24 +157,25 @@ if __name__ == "__main__":
     base_action.right_turn(20)
     rospy.sleep(1)
     base_action.left_turn(12)
-    body_action.fast_move_to([0.31, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.41, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], duration = 1.0)
 
     head_action.look_at(0.1,1.0,1.3, duration = .5)
 
 
-    body_action.safe_move_to([0.31, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], velocity = 1.0)
-    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  0.00, -1.57, 0.00], duration = 1.0)
-    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  1.57, -1.57, 0.00], duration = 1.0)
-    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  3.12, -1.57, 0.00], duration = 1.0)
-    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00, -1.63, -1.57, 0.00], duration = 1.0)
-    body_action.fast_move_to([0.31, 1.55, 0.00, 1.57,  0.00,  1.63, -1.57, 0.00], duration = 2.0)
+    body_action.safe_move_to([0.41, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], velocity = 1.0)
+    body_action.fast_move_to([0.41, 1.55, 0.00, 1.57,  0.00,  0.00, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.41, 1.55, 0.00, 1.57,  0.00,  1.57, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.41, 1.55, 0.00, 1.57,  0.00,  3.12, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.41, 1.55, 0.00, 1.57,  0.00, -1.63, -1.57, 0.00], duration = 1.0)
+    body_action.fast_move_to([0.41, 1.55, 0.00, 1.57,  0.00,  1.63, -1.57, 0.00], duration = 2.0)
 
-    rospy.sleep(.2)
+    rospy.sleep(.1)
     head_action.look_at(1.0,0.0,1.3, duration = .7)
 
-    body_action.fast_move_to([0.31, 0.60, 0.00, 1.57, -2.16,  1.57, -1.57, 0.00], duration =  1.5)
-    body_action.fast_move_to([0.31, 0.60, 0.00, 1.57, -2.16,  1.57,  0.00, 0.00], duration =  1.0)
-    body_action.fast_move_to([0.31, 1.56, 0.00, 1.57, -1.57,  1.57,  0.00, 0.00], duration =  1.0)
-    body_action.fast_move_to([0.27, 1.56, 0.00, 1.57, -1.57,  1.57,  0.00, 0.00], duration =  1.0)
+    body_action.fast_move_to([0.41, 0.60, 0.00, 1.57, -2.16,  1.57, -1.57, 0.00], duration =  1.5)
+    body_action.fast_move_to([0.41, 0.60, 0.00, 1.57, -2.16,  1.57,  0.00, 0.00], duration =  1.0)
+    body_action.fast_move_to([0.41, 1.55, 0.00, 1.57, -1.57,  1.57,  0.00, 0.00], duration =  1.0)
+    body_action.fast_move_to([0.27, 1.55, 0.00, 1.57, -1.57,  1.57,  0.00, 0.00], duration =  1.0)
 
+    rospy.sleep(.1)
     head_action.look_at(0.0,0.0,0.0, duration = .5)
