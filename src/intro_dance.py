@@ -71,45 +71,54 @@ class FootWork(object):
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
 
         self.twist = Twist()
-		self.twist.linear.x = 0.0
-		self.twist.linear.y = 0.0
-		self.twist.linear.z = 0.0
-		self.twist.angular.x = 0.0
-		self.twist.angular.y = 0.0
-		self.twist.angular.z = 0.0
+        self.twist.linear.x = 0.0
+        self.twist.linear.y = 0.0
+        self.twist.linear.z = 0.0
+        self.twist.angular.x = 0.0
+        self.twist.angular.y = 0.0
+        self.twist.angular.z = 0.0
+
+        self.rate = rospy.Rate(10)
 
     def left_turn(self, iter):
-        for i in iter:
-            self.twist.angular.y = 1.0
-            self.pub.publish(self.twist)
+        self.twist.angular.z = 1.0
 
-    def right_turn(self, twist_msg, iter):
-        for i in iter:
-            self.twist.angular.y = -1.0
+        for i in range(iter):
             self.pub.publish(self.twist)
+            self.rate.sleep()
+
+    def right_turn(self, iter):
+        self.twist.angular.z = -1.0
+
+        for i in range(iter):
+            self.pub.publish(self.twist)
+            self.rate.sleep()
 
 if __name__ == "__main__":
     # Create a node
-    rospy.init_node("intro_dance")
+    rospy.init_node("intro_dance", anonymous = False)
 
     # Make sure sim time is working
     while not rospy.Time.now():
         pass
 
-# ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
-# "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
+
     # Setup clients
     body_action = FollowTrajectoryClient()
     head_action = PointHeadClient()
     base_action = FootWork()
 
+    
     # body_action.move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], velocity = 0.5)
     #
     # body_action.move_to([0.29, 1.17, 1.52, 1.47, -0.80,  0.00,  0.00, 0.00], velocity = 1.0)
     # body_action.move_to([0.29, 1.17, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], velocity = 1.0)
     # body_action.move_to([0.29, 1.46, 1.52, 1.47, -1.57,  0.00,  0.00, 0.00], velocity = 1.0)
 
-    base_action.left_turn(10)
+    # base_action.left_turn(5)
+    # base_action.right_turn(5)
+    # base_action.left_turn(10)
+    # base_action.right_turn(25)
 
 
     # body_action.move_to([0.29, 1.55, 0.00, 1.57,  0.00, -1.57, -1.57, 0.00], velocity = 1.0)
