@@ -122,10 +122,12 @@ class FootWork(object):
     def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
         self.twist.angular.z = 1.0
-
+        
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
+        # Reset the angular rotation value to be zero
+        self.twist.angular.z = 0.0
 
     def right_turn(self, iter):
         # Set angular rotation around z access to -1 (turn right/CW)
@@ -134,6 +136,8 @@ class FootWork(object):
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
+        # Reset the angular rotation value to be zero
+        self.twist.angular.z = 0.0
 
 if __name__ == "__main__":
     # Create a node
