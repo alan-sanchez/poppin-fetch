@@ -58,6 +58,9 @@ class FollowTrajectoryClient(object):
                 self.scene.removeCollisionObject("keepout")
                 return
 
+        self.safe_client.wait_for_server()
+
+
     # This function allows the fecth to move quicker.
     # WARNING: This does not plan around objects.
     def fast_move_to(self,positions, duration = 1):
@@ -118,22 +121,46 @@ class FootWork(object):
         # Limit the publication rate.
         self.rate = rospy.Rate(10)
 
+    def cumbia(self, iter):
+        ang_cmds = [1.0, -1.0, -1.0, 1.0]
+        lin_cmds = [-0.1, 0.1, -0.1, 0.1]
 
-    def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
         self.twist.angular.z = 1.0
+        self.twist.linear.x = -0.1
 
-        for i in range(iter):
-            self.pub.publish(self.twist)
-            self.rate.sleep()
+        for i in range(len(ang_cmds)):
+            self.twist.angular.z = ang_cmds[i]
+            self.twist.linear.x  = lin_cmds[i]
+            for it in range(iter):
+                self.pub.publish(self.twist)
+                self.rate.sleep()
 
-    def right_turn(self, iter):
+        # Reset the angular rotation value to be zero
+        self.twist.angular.z = 0.0
+        self.twist.linear.x  = 0.0
+
+    def move_forward(self,iter):
         # Set angular rotation around z access to -1 (turn right/CW)
-        self.twist.angular.z = -1.0
-
+        self.twist.linear.x = 1.0
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
+
+        # Reset the angular rotation value to be zero
+        self.twist.linear.x = 0.0
+
+    def move_backward(self,iter):
+        # Set angular rotation around z access to -1 (turn right/CW)
+        self.twist.linear.x = -1.0
+        for i in range(iter):
+            self.pub.publish(self.twist)
+            self.rate.sleep()
+
+        # Reset the angular rotation value to be zero
+        self.twist.linear.x = 0.0
+
+
 
 if __name__ == "__main__":
     # Create a node
@@ -149,5 +176,32 @@ if __name__ == "__main__":
     base_action = FootWork()
 
     # init configuration
-    
+    head_action.look_at(1.0,0.0,1.2, duration = 1)
+    body_action.fast_move_to([0.30, 1.59, 1.00, -1.36, 1.66,  0.50,  0.42, 0.00], duration = 1)
+    rospy.sleep(1)
+
     # Begin Movements
+    # for i in range(2):
+    #     base_action.move_forward(5)
+    #     base_action.move_backward(6)
+    #     body_action.fast_move_to([0.30, 1.40, 1.00, -1.36, 1.86,  0.50,  0.42, 0.00], duration = 1)
+    #     base_action.move_backward(5)
+    #     base_action.move_forward(6)
+    #     body_action.fast_move_to([0.30, 1.59, 1.00, -1.36, 1.66,  0.50,  0.42, 0.00], duration = 1)
+
+    # head_action.look_at(0.2,-1.0,1.2, duration = 1)
+    # rospy.sleep(2)
+    # head_action.look_at(0.2, 0.0,1.2, duration = 1)
+    # base_action.cumbia(13)
+    # base_action.cumbia(13)
+
+
+
+    head_action.look_at(0.2,-1.0,1.2, duration = 1)
+    head_action.look_at(0.2,-1.0,1.6, duration = .5)
+    head_action.look_at(0.2,-1.0,1.2, duration = .5)
+
+    body_action.fast_move_to([0.30, -0.12, 0.48, -1.70, 2.21, -1.32, 1.20, 1.61], duration = 1)
+    body_action.fast_move_to([0.30,  0.00, 0.58, -1.70, 2.21, -1.32, 1.20, 1.61], duration = 1)
+
+    head_action.look_at(0.2,-0.2,1.0, duration = 1.0)
