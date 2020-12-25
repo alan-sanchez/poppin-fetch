@@ -135,18 +135,21 @@ class FootWork(object):
         # Limit the publication rate.
         self.rate = rospy.Rate(10)
 
-    def cumbia(self, iter):
-        ang_cmds = [1.0, -1.0, -1.0, 1.0]
-        lin_cmds = [-0.05, 0.05, -0.05, 0.05]
-
+    def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
+        self.twist.angular.z = 1.0
 
-        for i in range(len(ang_cmds)):
-            self.twist.angular.z = ang_cmds[i]
-            self.twist.linear.x  = lin_cmds[i]
-            for it in range(iter):
-                self.pub.publish(self.twist)
-                self.rate.sleep()
+        for i in range(iter):
+            self.pub.publish(self.twist)
+            self.rate.sleep()
+
+    def right_turn(self, iter):
+        # Set angular rotation around z access to -1 (turn right/CW)
+        self.twist.angular.z = -1.0
+
+        for i in range(iter):
+            self.pub.publish(self.twist)
+            self.rate.sleep()
 
         # Reset the angular rotation value to be zero
         self.twist.angular.z = 0.0
