@@ -48,6 +48,7 @@ class FollowTrajectoryClient(object):
         self.base_action = FootWork()
         self.head_action = PointHeadClient()
 
+
     # Function that plans and moves fetch around the "keepout" object.
     # Function takes both the arm_and_torso joint positions and velocity arguments.
     def safe_move_to(self, positions, velocity=1):
@@ -57,6 +58,7 @@ class FollowTrajectoryClient(object):
                                                  positions,
                                                  0.0,
                                                  max_velocity_scaling_factor=velocity)
+
 
     # This function allows the fecth to move quicker.
     # WARNING: This does not plan around objects.
@@ -104,6 +106,7 @@ class PointHeadClient(object):
         rospy.loginfo("Waiting for head_controller...")
         self.client.wait_for_server()
 
+
     def look_at(self, x, y, z, frame = "gripper_link", duration=1.0):
         goal = PointHeadGoal()
         goal.target.header.stamp = rospy.Time.now()
@@ -135,6 +138,7 @@ class FootWork(object):
         # Limit the publication rate.
         self.rate = rospy.Rate(10)
 
+
     def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
         self.twist.angular.z = 1.0
@@ -142,6 +146,9 @@ class FootWork(object):
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
+        # Reset the angular rotation value to be zero
+        self.twist.angular.z = 0.0
+
 
     def right_turn(self, iter):
         # Set angular rotation around z access to -1 (turn right/CW)
@@ -150,10 +157,9 @@ class FootWork(object):
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
-
         # Reset the angular rotation value to be zero
         self.twist.angular.z = 0.0
-        self.twist.linear.x  = 0.0
+
 
     def move_forward(self,iter):
         # Set angular rotation around z access to -1 (turn right/CW)
@@ -161,9 +167,9 @@ class FootWork(object):
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
-
         # Reset the angular rotation value to be zero
         self.twist.linear.x = 0.0
+
 
     def move_backward(self,iter):
         # Set angular rotation around z access to -1 (turn right/CW)
@@ -171,7 +177,6 @@ class FootWork(object):
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
-
         # Reset the angular rotation value to be zero
         self.twist.linear.x = 0.0
 
@@ -179,7 +184,7 @@ class FootWork(object):
 
 if __name__ == "__main__":
     # Create a node
-    rospy.init_node("intro_dance", anonymous = False)
+    rospy.init_node("puppet_dance", anonymous = False)
 
     # Make sure sim time is working
     while not rospy.Time.now():
@@ -195,11 +200,32 @@ if __name__ == "__main__":
     head_action.look_at(0.0, 0.0, 0.0, duration = 1)
     rospy.sleep(1)
 
-
-    body_action.fast_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  .90,  -1.54], duration = .8, head_motion = "move")
+    # Puppet the left arm
+    body_action.fast_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  0.90,  -1.54], duration = .6, head_motion = "move")
     body_action.fast_move_to([.38,  0.0, 1.17, 0.00, -2.18, 0.00,  1.00,  -1.54], duration = .8, head_motion = "move")
-    body_action.fast_move_to([.38, 0.05, 1.17, 0.00, -2.18, 0.00,  .90,  -1.54], duration = .8)
+    body_action.fast_move_to([.38, 0.05, 1.17, 0.00, -2.18, 0.00,  0.90,  -1.54], duration = .6)
+    rospy.sleep(.7)
 
+    # Head Isolation
+    body_action.fast_move_to([.38,-0.33, 0.00, 0.00, -1.57, 0.00,  1.56,  0.00], duration = 1, head_motion  = "move")
+    body_action.fast_move_to([.38,-0.86, -0.1, 0.22, -1.04, 0.70,  1.36, -0.44], duration = 1, head_motion = "move")
 
-    body_action.fast_move_to([.38,-0.33, 0.00, 0.00, -1.57, 0.00,  1.56,  0.00], duration = 1, head_motion = "move")
-    body_action.fast_move_to([.38,-0.93, -0.1, 0.40, -1.15, 0.70,  1.59,  0.00], duration = .8, head_motion = "move")
+    # Turn Body
+    body_action.fast_move_to([.38, 0.22, 0.92, 1.12, -2.0, 0.60,  1.19, -2.48], duration = 1.5, head_motion = "move")
+    body_action.fast_move_to([.38, 0.22, 0.92, 1.12, -2.0, 0.60,  0.85, -2.48], duration = .7, head_motion  = "move")
+
+    # Upwards body roll
+    body_action.fast_move_to([.38, 0.05, 1.11, 1.08, -.89, -1.0,  -.73, -2.56], duration = 1.2, head_motion = "move")
+    body_action.fast_move_to([.38, 0.05, 1.11, 1.08, -1.16, -1.0,  -.73, -2.56], duration = .7)
+
+    # Chest pumps
+    body_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96, -.69, -1.47], duration = 1.5, head_motion = "move")
+    body_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
+    body_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96,  -.69, -1.47], duration = .8, head_motion = "move")
+    body_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
+    body_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96,  -.69, -1.47], duration = .8, head_motion = "move")
+
+    # Turn Body towards camera. End
+    body_action.fast_move_to([.38, 0.27, 0.15, 1.06, -1.55, -2.8,  -.62, -1.90], duration = .8, head_motion = "move")
+    body_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
+    body_action.fast_move_to([.38, -.08, 0.24, .58, -.87, -3.0, -.21, -1.36], duration = .8, head_motion = "move")
