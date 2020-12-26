@@ -4,6 +4,7 @@
 import copy
 import actionlib
 import rospy
+import time
 
 from math import sin, cos
 from moveit_python import (MoveGroupInterface,
@@ -118,18 +119,23 @@ class PointHeadClient(object):
         goal.target.point.y = y
         goal.target.point.z = z
         goal.min_duration = rospy.Duration(duration)
-        self.client.send_goal(goal,feedback_cb=self.feedback_callback)
+        self.client.send_goal(goal)
+
+        # condtions to move fetch while head is moving.
+        start_time = time.time()
+        total_time = 0
+        while total_time < duration:
+            if self.base_motion == "Forward":
+                self.base_action.move_forward(1)
+
+            elif self.base_motion == "Backward":
+                self.base_action.move_backward(1)
+            else:
+                break
+
+            total_time = time.time() - start_time
+
         self.client.wait_for_result()
-
-    def feedback_callback(self,feedback):
-        print(feedback.pointing_angle_error)
-        # if self.base_motion == "Forward":
-        #     self.base_action.move_forward(1)
-        #
-        # elif self.base_motion == "Backward":
-        #     print('y')
-        #     self.base_action.move_backward(1)
-
 
 
 class FootWork(object):
@@ -153,7 +159,7 @@ class FootWork(object):
 
     def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
-        self.twist.angular.z = 1.0
+        self.twist.angular.z = 3
 
         for i in range(iter):
             self.pub.publish(self.twist)
@@ -164,7 +170,7 @@ class FootWork(object):
 
     def right_turn(self, iter):
         # Set angular rotation around z access to -1 (turn right/CW)
-        self.twist.angular.z = -1.0
+        self.twist.angular.z = -3
 
         for i in range(iter):
             self.pub.publish(self.twist)
@@ -213,31 +219,29 @@ if __name__ == "__main__":
     rospy.sleep(1)
 
     # Start motions
-    base_action.move_backward(3)
-    head_action.look_at(0.2, -1.0, 1.2, duration = .7)
-    head_action.look_at(1.0, 0.0, 1.2, duration = .7, base_motion = "Backward")
-    # base_action.right_turn(40)
-    # body_action.fast_move_to([.3, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
-    # base_action.move_backward(10)
-
+    base_action.move_backward(2)
+    head_action.look_at(0.2, -1.0, 1.2, duration = .5)
+    head_action.look_at(1.0, 0.0, 1.2, duration = .5, base_motion = "Backward")
+    base_action.right_turn(13)
+    rospy.sleep(.2)
+    body_action.fast_move_to([.3, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    base_action.move_backward(6)
+    rospy.sleep(.7)
     # Forward Motion with height change
-    # body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
-    # base_action.move_backward(3)
-    # body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
-#    # head_action.look_at(1.0, 0.0, 1.6, duration = .5)
-    # base_action.move_forward(5)
-    # body_action.fast_move_to([.30, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = 1)
-    # base_action.move_forward(5)
-    # body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = 1)
-    # body_action.fast_move_to([.30, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = 1)
-    # body_action.fast_move_to([.29, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
-    # body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
-    # base_action.move_backward(5)
-    # body_action.fast_move_to([.33, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .2)
-    # base_action.move_backward(5)
-    # body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .2)
-    # base_action.move_backward(5)
-    #
-    #
+    body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    base_action.move_backward(2)
+    body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    base_action.move_forward(5)
+    body_action.fast_move_to([.34, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .2)
+    base_action.move_forward(5)
+    body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .4)
+    body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .4)
+    body_action.fast_move_to([.34, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .4)
+    body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
 
-    # Moonwalk
+   # Moonwalk
+    base_action.move_backward(5)
+    body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .3)
+    base_action.move_backward(5)
+    body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .3)
+    base_action.move_backward(5)
