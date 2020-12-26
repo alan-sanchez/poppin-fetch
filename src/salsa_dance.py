@@ -60,8 +60,8 @@ class FollowTrajectoryClient(object):
 
     # This function allows the fecth to move quicker.
     # WARNING: This does not plan around objects.
-    def fast_move_to(self,positions, duration = 1, direction = None, head_motion = None):
-        self.direction = direction
+    def fast_move_to(self,positions, duration = 1, base_motion = None, head_motion = None):
+        self.base_motion = base_motion
         self.head_motion = head_motion
 
         if len(self.joint_names) != len(positions):
@@ -82,10 +82,10 @@ class FollowTrajectoryClient(object):
 
 
     def feedback_callback(self,feedback):
-        if self.direction == "Forward":
+        if self.base_motion == "Forward":
             self.base_action.move_forward(1)
 
-        elif self.direction == "Backward":
+        elif self.base_motion == "Backward":
             self.base_action.move_backward(1)
 
         if self.head_motion == "move":
@@ -193,11 +193,11 @@ if __name__ == "__main__":
 
     # 2 basics
     for i in range(2):
-        body_action.fast_move_to([0.35, 1.59, 1.00, -1.36, 1.66,  0.50,  0.42, 0.00], duration = .5, direction = "Forward")
-        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .5, direction = "Backward")
+        body_action.fast_move_to([0.35, 1.59, 1.00, -1.36, 1.66,  0.50,  0.42, 0.00], duration = .5, base_motion = "Forward")
+        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .5, base_motion = "Backward")
         rospy.sleep(.5)
-        body_action.fast_move_to([0.35, 1.40, 1.00, -1.36, 1.86,  0.50,  0.42, 0.00], duration = .5, direction = "Backward")
-        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .5, direction = "Forward")
+        body_action.fast_move_to([0.35, 1.40, 1.00, -1.36, 1.86,  0.50,  0.42, 0.00], duration = .5, base_motion = "Backward")
+        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .5, base_motion = "Forward")
         rospy.sleep(.5)
 
     # rospy.sleep(2)
