@@ -62,8 +62,8 @@ class FollowTrajectoryClient(object):
 
     # This function allows the fecth to move quicker.
     # WARNING: This does not plan around objects.
-    def fast_move_to(self,positions, duration = 1, direction = None, head_motion = None):
-        self.direction = direction
+    def fast_move_to(self,positions, duration = 1, base_motion = None, head_motion = None):
+        self.base_motion = base_motion
         self.head_motion = head_motion
 
         if len(self.joint_names) != len(positions):
@@ -84,10 +84,10 @@ class FollowTrajectoryClient(object):
 
 
     def feedback_callback(self,feedback):
-        if self.direction == "Forward":
+        if self.base_motion == "Forward":
             self.base_action.move_forward(1)
 
-        elif self.direction == "Backward":
+        elif self.base_motion == "Backward":
             self.base_action.move_backward(1)
 
         if self.head_motion == "move":
