@@ -106,8 +106,11 @@ class PointHeadClient(object):
         rospy.loginfo("Waiting for head_controller...")
         self.client.wait_for_server()
 
+        self.base_action = FootWork()
 
-    def look_at(self, x, y, z, frame = "base_link", duration=1.0):
+    def look_at(self, x, y, z, frame = "base_link", duration=1.0, base_motion = None):
+        self.base_motion = base_motion
+
         goal = PointHeadGoal()
         goal.target.header.stamp = rospy.Time.now()
         goal.target.header.frame_id = frame
@@ -119,10 +122,10 @@ class PointHeadClient(object):
         self.client.wait_for_result()
 
     def feedback_callback(self,feedback):
-        if self.direction == "Forward":
+        if self.base_motion == "Forward":
             self.base_action.move_forward(1)
 
-        elif self.direction == "Backward":
+        elif self.base_motion == "Backward":
             self.base_action.move_backward(1)
 
 
