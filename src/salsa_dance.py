@@ -13,8 +13,8 @@ from moveit_python.geometry import rotate_pose_msg_by_euler_angles
 from moveit_python import PlanningSceneInterface
 
 # Import from messages
-from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
-from control_msgs.msg import PointHeadAction, PointHeadGoal
+from control_msgs.msg import FollowJointTrajectoryAction,FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
+from control_msgs.msg import PointHeadAction,PointHeadFeedback, PointHeadGoal
 from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal
 from geometry_msgs.msg import PoseStamped, Twist, Point
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
@@ -194,10 +194,10 @@ if __name__ == "__main__":
     # 2 basics
     for i in range(2):
         body_action.fast_move_to([0.35, 1.59, 1.00, -1.36, 1.66,  0.50,  0.42, 0.00], duration = .5, base_motion = "Forward")
-        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .5, base_motion = "Backward")
+        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .6, base_motion = "Backward")
         rospy.sleep(.5)
         body_action.fast_move_to([0.35, 1.40, 1.00, -1.36, 1.86,  0.50,  0.42, 0.00], duration = .5, base_motion = "Backward")
-        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .5, base_motion = "Forward")
+        body_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .6, base_motion = "Forward")
         rospy.sleep(.5)
 
     # rospy.sleep(2)
@@ -216,10 +216,10 @@ if __name__ == "__main__":
     head_action.look_at(0.2, -1.0, 1.2, duration = 1)
     head_action.look_at(0.2, -1.0, 1.6, duration = .7)
     head_action.look_at(0.2, -1.0, 1.2, duration = .7)
-    rospy.sleep(3)
+    rospy.sleep(2.5)
 
     # shame pose
-    body_action.fast_move_to([0.35, 0.74, 0.22, -1.72, 2.20, -1.11, 1.41, 1.34], duration = 1, head_motion = "move")
+    body_action.fast_move_to([0.35, 0.74, 0.22, -1.72, 2.20, -1.11, 1.41, 1.34], duration = 1.5, head_motion = "move")
     head_action.look_at(1.0, -0.1, 1.0, duration = 0.5)
     head_action.look_at(1.0,  0.1, 1.0, duration = 0.5)
     head_action.look_at(1.0, -0.1, 1.0, duration = 0.5)

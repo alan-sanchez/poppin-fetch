@@ -13,8 +13,8 @@ from moveit_python.geometry import rotate_pose_msg_by_euler_angles
 from moveit_python import PlanningSceneInterface
 
 # Import from messages
-from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
-from control_msgs.msg import PointHeadAction, PointHeadGoal
+from control_msgs.msg import FollowJointTrajectoryAction,FollowJointTrajectoryFeedback,FollowJointTrajectoryGoal
+from control_msgs.msg import PointHeadAction,PointHeadFeedback, PointHeadGoal
 from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal
 from geometry_msgs.msg import PoseStamped, Twist, Point
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
@@ -62,8 +62,8 @@ class FollowTrajectoryClient(object):
 
     # This function allows the fecth to move quicker.
     # WARNING: This does not plan around objects.
-    def fast_move_to(self,positions, duration = 1, direction = None, head_motion = None):
-        self.direction = direction
+    def fast_move_to(self,positions, duration = 1, base_motion = None, head_motion = False):
+        self.base_motion = base_motion
         self.head_motion = head_motion
 
         if len(self.joint_names) != len(positions):
@@ -84,14 +84,14 @@ class FollowTrajectoryClient(object):
 
 
     def feedback_callback(self,feedback):
-        if self.direction == "Forward":
+        if self.base_motion == "Forward":
             self.base_action.move_forward(1)
 
-        elif self.direction == "Backward":
+        elif self.base_motion == "Backward":
             self.base_action.move_backward(1)
 
-        if self.head_motion == "move":
-            self.head_action.look_at(0, 0 ,0, duration = .2)
+        if self.head_motion == True:
+            self.head_action.look_at(1.0, 0 ,1.1, duration = .4)
 
         else:
             pass
@@ -122,11 +122,13 @@ class PointHeadClient(object):
         self.client.wait_for_result()
 
     def feedback_callback(self,feedback):
-        if self.base_motion == "Forward":
-            self.base_action.move_forward(1)
-
-        elif self.base_motion == "Backward":
-            self.base_action.move_backward(1)
+        print(feedback.pointing_angle_error)
+        # if self.base_motion == "Forward":
+        #     self.base_action.move_forward(1)
+        #
+        # elif self.base_motion == "Backward":
+        #     print('y')
+        #     self.base_action.move_backward(1)
 
 
 
@@ -194,7 +196,7 @@ class FootWork(object):
 
 if __name__ == "__main__":
     # Create a node
-    rospy.init_node("intro_dance", anonymous = False)
+    rospy.init_node("true_dance", anonymous = False)
 
     # Make sure sim time is working
     while not rospy.Time.now():
@@ -206,9 +208,36 @@ if __name__ == "__main__":
     base_action = FootWork()
 
     # init configuration
-    body_action.safe_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], velocity = .5)
-    head_action.look_at(0.0, 0.0, 0.0, duration = 1)
+    body_action.safe_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], velocity = .5)
+    head_action.look_at(1.0, 0.0, 1.2, duration = 1)
     rospy.sleep(1)
 
+    # Start motions
     base_action.move_backward(3)
-    head_action.look_at(0.2, 1.0, 1.2, duration = .5)
+    head_action.look_at(0.2, -1.0, 1.2, duration = .7)
+    head_action.look_at(1.0, 0.0, 1.2, duration = .7, base_motion = "Backward")
+    # base_action.right_turn(40)
+    # body_action.fast_move_to([.3, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    # base_action.move_backward(10)
+
+    # Forward Motion with height change
+    # body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    # base_action.move_backward(3)
+    # body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+#    # head_action.look_at(1.0, 0.0, 1.6, duration = .5)
+    # base_action.move_forward(5)
+    # body_action.fast_move_to([.30, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = 1)
+    # base_action.move_forward(5)
+    # body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = 1)
+    # body_action.fast_move_to([.30, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = 1)
+    # body_action.fast_move_to([.29, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    # body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    # base_action.move_backward(5)
+    # body_action.fast_move_to([.33, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .2)
+    # base_action.move_backward(5)
+    # body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .2)
+    # base_action.move_backward(5)
+    #
+    #
+
+    # Moonwalk

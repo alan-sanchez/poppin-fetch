@@ -13,8 +13,8 @@ from moveit_python.geometry import rotate_pose_msg_by_euler_angles
 from moveit_python import PlanningSceneInterface
 
 # Import from messages
-from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
-from control_msgs.msg import PointHeadAction, PointHeadGoal
+from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
+from control_msgs.msg import PointHeadAction, PointHeadFeedback,PointHeadGoal
 from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal
 from geometry_msgs.msg import PoseStamped, Twist, Point
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
