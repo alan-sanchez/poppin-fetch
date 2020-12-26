@@ -215,12 +215,12 @@ if __name__ == "__main__":
 
     # init configuration
     body_action.safe_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], velocity = .5)
-    head_action.look_at(1.0, 0.0, 1.2, duration = 1)
+    head_action.look_at(1.0, -0.5, 1.2, duration = 1)
     rospy.sleep(1)
 
     # Start motions
     base_action.move_backward(2)
-    head_action.look_at(0.2, -1.0, 1.2, duration = .5)
+    head_action.look_at(0.2, -1.0, 1.2, duration = .3)
     head_action.look_at(1.0, 0.0, 1.2, duration = .5, base_motion = "Backward")
     base_action.right_turn(13)
     rospy.sleep(.2)
@@ -231,17 +231,21 @@ if __name__ == "__main__":
     body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
     base_action.move_backward(2)
     body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    rospy.sleep(.4)
     base_action.move_forward(5)
+    rospy.sleep(.4)
     body_action.fast_move_to([.34, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .2)
     base_action.move_forward(5)
+    rospy.sleep(.4)
     body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .4)
     body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .4)
     body_action.fast_move_to([.34, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .4)
     body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
+    rospy.sleep(.4)
 
    # Moonwalk
     base_action.move_backward(5)
     body_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .3)
     base_action.move_backward(5)
     body_action.fast_move_to([.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .3)
-    base_action.move_backward(5)
+    base_action.move_backward(10)
