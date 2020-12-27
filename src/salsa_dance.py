@@ -210,7 +210,7 @@ if __name__ == "__main__":
     body_action.fast_move_to([0.35, 1.59, 1.00, -1.36, 2.00,  0.50,  0.62, 0.00], duration = 1)
     for i in range(3):
         base_action.cumbia(8)
-    rospy.sleep(1.5)
+    rospy.sleep(1)
 
     # Fetch Challenges human
     head_action.look_at(0.3, -1.0, 1.2, duration = 1)
@@ -228,6 +228,7 @@ if __name__ == "__main__":
     head_action.look_at(1.0,  0.1, 1.0, duration = 0.5)
     body_action.fast_move_to([0.35, 0.90, 0.55, -1.72, 2.20, -1.11, 1.20, 1.34], duration = .7)
     head_action.look_at(0.2,-1.0,1.2, duration = .7)
+    rospy.sleep(.8)
     body_action.fast_move_to([0.35, 0.74, 0.22, -1.72, 2.20, -1.11, 1.41, 1.34], duration = 1, head_motion = "move")
     head_action.look_at(1.0, -0.1, 1.0, duration = 0.5)
     head_action.look_at(1.0,  0.1, 1.0, duration = 0.5)

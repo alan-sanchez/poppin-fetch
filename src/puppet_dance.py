@@ -212,8 +212,8 @@ if __name__ == "__main__":
     rospy.sleep(.8)
     # body_action.fast_move_to([.38,-0.73,-0.25, 0.00, -1.01, 0.00,  1.38,  0.00], duration = 1.2, head_motion = "move")
     # body_action.fast_move_to([.38,-0.5,-0.25, 0.00, -.87, 0.54,  1.09,  -.14], duration = 1.2, head_motion = "move")
-    body_action.fast_move_to([.38,-0.73,-0.48, 0.00, -0.28, 0.00,  0.86,  0.00], duration = 1.2, head_motion = "move")
-    body_action.fast_move_to([.38,-0.33,-0.25, 0.00, -1.2, 0.00,  1.56,  0.00], duration = 1.2, head_motion = "move")
+    body_action.fast_move_to([.38,-0.73,-0.48, 0.00, -0.28, 0.00,  0.86,  0.00], duration = 1.0, head_motion = "move")
+    body_action.fast_move_to([.38,-0.33,-0.25, 0.00, -1.2, 0.00,  1.56,  0.00], duration = 1.0, head_motion = "move")
 
     # Turn Body
     body_action.fast_move_to([.38, 0.22, 0.92, 1.12, -2.0, 0.60,  1.19, -2.48], duration = 1.5, head_motion = "move")
@@ -221,7 +221,7 @@ if __name__ == "__main__":
 
     # Upwards body roll
     body_action.fast_move_to([.38, 0.68, 0.52, 1.08, -1.58, -1.08, -.16, -2.97], duration = 1.5, head_motion = "move")
-    body_action.fast_move_to([.38, 0.68, 0.52, 1.08, -1.58, -1.08, -.34, -2.97], duration = 0.5, head_motion = "move")
+    body_action.fast_move_to([.38, 0.68, 0.52, 1.08, -1.58, -1.08, -.44, -2.97], duration = 0.5, head_motion = "move")
 
     # # Chest pumps
     body_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96, -.69, -1.47], duration = 1.5, head_motion = "move")
