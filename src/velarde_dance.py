@@ -13,10 +13,11 @@ from moveit_python import (MoveGroupInterface,
 from moveit_python.geometry import rotate_pose_msg_by_euler_angles
 from moveit_python import PlanningSceneInterface
 
-# Import from messages
+# Import from command messages
 from control_msgs.msg import FollowJointTrajectoryAction,FollowJointTrajectoryFeedback,FollowJointTrajectoryGoal
 from control_msgs.msg import PointHeadAction,PointHeadFeedback, PointHeadGoal
-from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal
+from control_msgs.msg import GripperCommandGoal, GripperCommandAction, GripperCommandFeedback
+
 from geometry_msgs.msg import PoseStamped, Twist, Point
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
@@ -30,10 +31,16 @@ class FollowTrajectoryClient(object):
         rospy.loginfo("...connected")
 
         # Setup action client that moves the fetch "quicker" than the previous client
-        self.fast_client = actionlib.SimpleActionClient("/arm_with_torso_controller/follow_joint_trajectory" ,
-                                                   FollowJointTrajectoryAction)
         rospy.loginfo("Waiting for Joint trajectory...")
+        self.fast_client = actionlib.SimpleActionClient("/arm_with_torso_controller/follow_joint_trajectory" ,FollowJointTrajectoryAction)
         self.fast_client.wait_for_server()
+        rospy.loginfo("...connected")
+
+
+        # Set up action client for gripper
+        rospy.loginfo("Waiting for Gripper client")
+        self.gripper_client = actionlib.SimpleActionClient('gripper_controller/gripper_action', GripperCommandAction)
+        self.gripper_client.wait_for_server()
         rospy.loginfo("...connected")
 
         # Set the names of the joints
