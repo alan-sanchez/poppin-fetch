@@ -96,7 +96,7 @@ class FollowTrajectoryClient(object):
         follow_goal.trajectory = trajectory
 
         self.fast_client.send_goal(follow_goal)
-        self.fast_client.wait_for_result()
+
 
         # condtions to move fetch while head is moving.
         start_time = time.time()
@@ -110,7 +110,7 @@ class FollowTrajectoryClient(object):
 
             if head_frame != None:
                 x, y, z = head_pose
-                self.head_action.look_at(x, y, z, frame = head_frame, duration = .2)
+                self.head_action.look_at(x, y, z, frame = head_frame, duration = .6)
 
             total_time = time.time() - start_time
 
@@ -261,16 +261,14 @@ if __name__ == "__main__":
     body_action.safe_move_to([.38, -1.31, .81, -2.86, -1.67, 0.00, 0.00, -1.42], velocity = 0.5)
     rospy.sleep(1)
 
-    # body_action.close_gripper()
-
 
     # Start arm motions
-    body_action.fast_move_to([0.32, -1.30,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 1)
+    body_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 1.2)
     for i in range(3):
-        body_action.fast_move_to([0.32, -1.30,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.6)
-        body_action.fast_move_to([0.38, -1.10,  1.20, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.6)
-        body_action.fast_move_to([0.32, -0.90,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.6)
-        body_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.6)
+        body_action.fast_move_to([0.32, -1.30,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.8)
+        body_action.fast_move_to([0.38, -1.10,  1.20, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.8)
+        body_action.fast_move_to([0.32, -0.90,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.8)
+        body_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.8)
 
     # Fetch stops to view what I am doing
     body_action.fast_move_to([0.38, -1.24,  1.20, -2.16, -1.49,  0.00, -1.19, -1.42], duration = 1.0,
@@ -294,7 +292,7 @@ if __name__ == "__main__":
     rospy.sleep(.4)
 
     # move foot
-    for i in range(3):
+    for i in range(2):
         body_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
         body_action.fast_move_to([0.38, -1.54,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 0.8)
         body_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
@@ -309,4 +307,4 @@ if __name__ == "__main__":
     rospy.sleep(.8)
 
     # Full arm extension, "Funny Part"
-    body_action.fast_move_to([0.38, -1.11,  1.18, -0.82, -1.49,  0.00,  0.09,  0.27], duration = 0.8)
+    body_action.fast_move_to([0.38, -1.11,  1.18, -0.82, -1.49,  0.00,  0.09,  0.27], duration = 0.6)
