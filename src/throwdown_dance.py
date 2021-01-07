@@ -259,3 +259,21 @@ if __name__ == "__main__":
     head_action.look_at(1.0, -0.0, 1.2, duration = 1)
     body_action.safe_move_to([.38, -1.16, 0.75, -1.516, -1.14, -0.57, 0.00,  0.00], velocity = 0.5)
     rospy.sleep(1)
+
+
+    # Start Head Motions
+    head_action.look_at(0.2, -1.0, 1.2, duration = .8)
+    head_action.look_at(0.2, -1.0, 1.6, duration = .6)
+    head_action.look_at(0.2, -1.0, 1.2, duration = .6)
+    head_action.look_at(1.0,  0.0, 1.2, duration = .6)
+
+    # Start arm movement/wave
+    body_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57,  0.70,  0.00], duration = 0.6)
+    body_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57, -1.02,  0.00], duration = 0.6)
+    body_action.fast_move_to([.38, -1.16,  0.58, -1.96, -1.46, -0.57,  0.69,  0.00], duration = 0.6)
+
+    # Move arm to belly then chest
+    body_action.fast_move_to([.38, -0.72,  1.02, -2.00, -1.81, -1.05,  1.41,  0.00], duration = 0.8)
+    body_action.fast_move_to([.38, -0.39,  0.00, -1.55, -1.96, -0.04,  1.59,  0.00], duration = 0.8)
+
+    #
