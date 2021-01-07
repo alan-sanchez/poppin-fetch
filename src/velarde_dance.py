@@ -108,6 +108,12 @@ class FollowTrajectoryClient(object):
             elif base_motion == "Backward":
                 self.base_action.move_backward(1)
 
+            elif base_motion == "Left_turn":
+                self.base_action.left_turn(1)
+
+            elif base_motion == "Right_turn":
+                self.base_action.right_turn(1)
+
             if head_frame != None:
                 x, y, z = head_pose
                 self.head_action.look_at(x, y, z, frame = head_frame, duration = .6)
@@ -145,7 +151,6 @@ class PointHeadClient(object):
         self.base_action = FootWork()
 
     def look_at(self, x, y, z, frame = "gripper_link", duration=1.0, base_motion = None):
-        self.base_motion = base_motion
 
         goal = PointHeadGoal()
         goal.target.header.stamp = rospy.Time.now()
@@ -160,16 +165,16 @@ class PointHeadClient(object):
         start_time = time.time()
         total_time = 0
         while total_time < duration:
-            if self.base_motion == "Forward":
+            if base_motion == "Forward":
                 self.base_action.move_forward(1)
 
-            elif self.base_motion == "Backward":
+            elif base_motion == "Backward":
                 self.base_action.move_backward(1)
 
-            elif self.base_motion == "Left_turn":
+            elif base_motion == "Left_turn":
                 self.base_action.left_turn(1)
 
-            elif self.base_motion == "Right_turn":
+            elif base_motion == "Right_turn":
                 self.base_action.right_turn(1)
 
             else:
