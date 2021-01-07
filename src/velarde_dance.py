@@ -43,6 +43,11 @@ class FollowTrajectoryClient(object):
         self.gripper_client.wait_for_server()
         rospy.loginfo("...connected")
 
+        # gripper params
+        self.gripper_closed_pos = 0  # The position for a fully-closed gripper (meters).
+        self.gripper_open_pos = 0.10  # The position for a fully-open gripper (meters).
+
+
         # Set the names of the joints
         self.joint_names = ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
@@ -53,6 +58,7 @@ class FollowTrajectoryClient(object):
         self.scene.removeCollisionObject("keepout")
         self.scene.addBox("keepout", 0.2, 0.5, 0.05, 0.15, 0.0, 0.375)
 
+        #
         self.base_action = FootWork()
         self.head_action = PointHeadClient()
 
@@ -90,20 +96,38 @@ class FollowTrajectoryClient(object):
         self.fast_client.send_goal(follow_goal,feedback_cb=self.feedback_callback)
         self.fast_client.wait_for_result()
 
+        # condtions to move fetch while head is moving.
+        start_time = time.time()
+        total_time = 0
+        while total_time < duration:
+            if self.base_motion == "Forward":
+                self.base_action.move_forward(1)
 
-    def feedback_callback(self,feedback):
-        if self.base_motion == "Forward":
-            self.base_action.move_forward(1)
+            elif self.base_motion == "Backward":
+                self.base_action.move_backward(1)
 
-        elif self.base_motion == "Backward":
-            self.base_action.move_backward(1)
+            if self.head_motion == True:
+                self.head_action.look_at(0.0, 0 ,0, frame = "gripper_link", duration = .4)
 
-        if self.head_motion == True:
-            self.head_action.look_at(0.0, 0 ,0, frame = "gripper_link", duration = .4)
+            total_time = time.time() - start_time
 
-        else:
-            pass
+        self.client.wait_for_result()
 
+
+    def open_gripper(self):
+        # Functions opens Grippers
+        goal = GripperCommandGoal()
+        goal.command.position = self.gripper_open_pos
+        self.gripper_client.send_goal(goal)
+        self.gripper_client.wait_for_result()
+
+
+    def close_gripper(self):
+        # Functions closses Grippers
+        goal = GripperCommandGoal()
+        goal.command.position = self.gripper_closed_pos
+        self.gripper_client.send_goal(goal)
+        self.gripper_client.wait_for_result()
 
 # Point the head using controller
 class PointHeadClient(object):
@@ -221,25 +245,27 @@ if __name__ == "__main__":
     base_action = FootWork()
 
     # init configuration
-    body_action.safe_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0.0], velocity = .5, )
-    head_action.look_at(0.0, 0.0, 0.0, frame = "gripper_link", duration = 1)
+    body_action.safe_move_to([.38, -1.31, .81, -2.86, -1.67, 0.00, 0.00, -1.42], velocity = .5, )
+    head_action.look_at(0.5, 0.5, 0.0, frame = "gripper_link", duration = 1)
     rospy.sleep(1)
+    body_action.close_gripper()
+    body_action.open_gripper()
 
-    # Start arm motions
-    body_action.fast_move_to([.38, -1.40, 1.20, -1.23, -1.35, 0.59, -.16, -.26], duration = .5, head_motion = True )
-    body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0], duration = .5, head_motion = True )
-    body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0.0], duration = .5, head_motion = True )
-    body_action.fast_move_to([.38, -1.40, 1.20, -1.23, -1.35, 0.59, -.16, -.26], duration = .5, head_motion = True )
-    body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0], duration = .5, head_motion = True )
-    body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0.0], duration = .5, head_motion = True )
-    rospy.sleep(.5)
-    # Look at human
-    head_action.look_at(0.2, -1.0, 1.2, duration = 1)
-    rospy.sleep(.5)
-    head_action.look_at(0.5, 0.5, .2, duration = 1)
-    rospy.sleep(1.5)
-    head_action.look_at(0.2, -1.0, 1.2, duration = 1)
-    rospy.sleep(.5)
-    head_action.look_at(0.0, 0.0, 0.0, frame = "gripper_link", duration = .7)
+    # # Start arm motions
+    # body_action.fast_move_to([.38, -1.40, 1.20, -1.23, -1.35, 0.59, -.16, -.26], duration = .5, head_motion = True )
+    # body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0], duration = .5, head_motion = True )
+    # body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0.0], duration = .5, head_motion = True )
+    # body_action.fast_move_to([.38, -1.40, 1.20, -1.23, -1.35, 0.59, -.16, -.26], duration = .5, head_motion = True )
+    # body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0], duration = .5, head_motion = True )
+    # body_action.fast_move_to([.34, -1.46, 1.16, -1.23, -1.96, 0.50, 0.36, 0.0], duration = .5, head_motion = True )
+    # rospy.sleep(.5)
+    # # Look at human
+    # head_action.look_at(0.2, -1.0, 1.2, duration = 1)
+    # rospy.sleep(.5)
+    # head_action.look_at(0.5, 0.5, .2, duration = 1)
+    # rospy.sleep(1.5)
+    # head_action.look_at(0.2, -1.0, 1.2, duration = 1)
+    # rospy.sleep(.5)
+    # head_action.look_at(0.0, 0.0, 0.0, frame = "gripper_link", duration = .7)
 
     # Take fake shelaces
