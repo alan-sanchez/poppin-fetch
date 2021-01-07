@@ -108,6 +108,12 @@ class FollowTrajectoryClient(object):
             elif base_motion == "Backward":
                 self.base_action.move_backward(1)
 
+            elif base_motion == "Left_turn":
+                self.base_action.left_turn(1)
+
+            elif base_motion == "Right_turn":
+                self.base_action.right_turn(1)
+
             if head_frame != None:
                 x, y, z = head_pose
                 self.head_action.look_at(x, y, z, frame = head_frame, duration = .6)
@@ -201,7 +207,7 @@ class FootWork(object):
 
     def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
-        self.twist.angular.z = .5
+        self.twist.angular.z = 1.5
 
         for i in range(iter):
             self.pub.publish(self.twist)
@@ -212,7 +218,7 @@ class FootWork(object):
 
     def right_turn(self, iter):
         # Set angular rotation around z access to -1 (turn right/CW)
-        self.twist.angular.z = -.5
+        self.twist.angular.z = -1.5
 
         for i in range(iter):
             self.pub.publish(self.twist)
@@ -256,8 +262,8 @@ if __name__ == "__main__":
     base_action = FootWork()
 
     # init configuration
-    head_action.look_at(1.0, -0.0, 1.2, duration = 1)
     arm_action.safe_move_to([.38, -1.16, 0.75, -1.516, -1.14, -0.57, 0.00,  0.00], velocity = 0.5)
+    head_action.look_at(1.0, -0.0, 1.2, duration = 1)
     rospy.sleep(1)
 
 
@@ -265,22 +271,38 @@ if __name__ == "__main__":
     head_action.look_at(0.2, -1.0, 1.2, duration = .8)
     head_action.look_at(0.2, -1.0, 1.6, duration = .6)
     head_action.look_at(0.2, -1.0, 1.2, duration = .6)
-    head_action.look_at(1.0,  0.0, 1.2, duration = .6)
+    head_action.look_at(1.0,  0.0, 1.2, duration = .8)
+    rospy.sleep(.5)
 
     # Start arm movement/wave
     arm_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57,  0.70,  0.00], duration = 0.6)
-    arm_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57, -1.02,  0.00], duration = 0.6)
-    arm_action.fast_move_to([.38, -1.16,  0.58, -1.96, -1.46, -0.57,  0.69,  0.00], duration = 0.6)
+    arm_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57, -0.70,  0.00], duration = 0.6)
+    arm_action.fast_move_to([.38, -1.16,  0.58, -1.96, -1.46, -0.57,  0.30,  0.00], duration = 0.6)
 
     # Move arm to belly then chest
     arm_action.fast_move_to([.38, -0.72,  1.02, -2.00, -1.81, -1.05,  1.41,  0.00], duration = 0.8)
     arm_action.fast_move_to([.38, -0.39,  0.00, -1.55, -1.96, -0.00,  1.59,  0.00], duration = 0.8)
 
     # Get arm moving for the first past to human.
-    arm_action.fast_move_to([.38, -1.44,  0.00, -1.59, -1.46,  0.00,  0.00,  1.57], duration = 0.8)
+    arm_action.fast_move_to([.38, -1.44,  0.00, -1.59, -1.46,  0.00,  0.00,  1.57], duration = 1.2)
     arm_action.fast_move_to([.38, -0.39,  0.00, -1.55, -1.96, -0.00,  0.00,  1.57], duration = 0.8)
     arm_action.fast_move_to([.38, -0.87,  0.00, -1.55, -2.19, -0.00,  0.00,  1.57], duration = 0.8)
+    rospy.sleep(1)
 
     # Pass back to fetch
-    arm_action.fast_move_to([.30, -0.64,  0.00, -1.55, -2.19, -0.00,  0.00,  1.57], duration = 1.5, base_motion = "Left_turn")
-    base_action.
+    arm_action.fast_move_to([.30, -0.64,  0.00, -1.55, -2.19, -1.57,  0.00,  0.00], duration = 1.2, base_motion = "Left_turn")
+    base_action.right_turn(14)
+
+    # Pass to human
+    arm_action.fast_move_to([.30, -0.64,  0.00, -1.55, -2.19, -1.57,  0.90,  0.00], duration = .6)
+    head_action.look_at(0.0, -1.0, 1.0, duration = .6)
+    # rospy.sleep(1)
+
+    # Pass back to fetch, torso move.
+    arm_action.fast_move_to([.38, -0.64,  0.00, -1.55, -2.19, -1.57,  0.90,  0.00], duration = 4,
+                             head_frame = "base_link",
+                             head_pose = [1.0, 0, 1.2])
+
+
+    # Final pass to human
+    arm_action.fast_move_to([.26, -0.72,  0.00, -2.45, -2.02, -2.14,  0.54,  0.00], duration = 0.8)
