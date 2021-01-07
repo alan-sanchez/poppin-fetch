@@ -201,7 +201,7 @@ class FootWork(object):
 
     def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
-        self.twist.angular.z = 1
+        self.twist.angular.z = .5
 
         for i in range(iter):
             self.pub.publish(self.twist)
@@ -212,7 +212,7 @@ class FootWork(object):
 
     def right_turn(self, iter):
         # Set angular rotation around z access to -1 (turn right/CW)
-        self.twist.angular.z = -.7
+        self.twist.angular.z = -.5
 
         for i in range(iter):
             self.pub.publish(self.twist)
@@ -251,13 +251,13 @@ if __name__ == "__main__":
         pass
 
     # Setup clients
-    body_action = FollowTrajectoryClient()
+    arm_action = FollowTrajectoryClient()
     head_action = PointHeadClient()
     base_action = FootWork()
 
     # init configuration
     head_action.look_at(1.0, -0.0, 1.2, duration = 1)
-    body_action.safe_move_to([.38, -1.16, 0.75, -1.516, -1.14, -0.57, 0.00,  0.00], velocity = 0.5)
+    arm_action.safe_move_to([.38, -1.16, 0.75, -1.516, -1.14, -0.57, 0.00,  0.00], velocity = 0.5)
     rospy.sleep(1)
 
 
@@ -268,12 +268,19 @@ if __name__ == "__main__":
     head_action.look_at(1.0,  0.0, 1.2, duration = .6)
 
     # Start arm movement/wave
-    body_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57,  0.70,  0.00], duration = 0.6)
-    body_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57, -1.02,  0.00], duration = 0.6)
-    body_action.fast_move_to([.38, -1.16,  0.58, -1.96, -1.46, -0.57,  0.69,  0.00], duration = 0.6)
+    arm_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57,  0.70,  0.00], duration = 0.6)
+    arm_action.fast_move_to([.38, -1.16,  0.75, -1.51, -1.14, -0.57, -1.02,  0.00], duration = 0.6)
+    arm_action.fast_move_to([.38, -1.16,  0.58, -1.96, -1.46, -0.57,  0.69,  0.00], duration = 0.6)
 
     # Move arm to belly then chest
-    body_action.fast_move_to([.38, -0.72,  1.02, -2.00, -1.81, -1.05,  1.41,  0.00], duration = 0.8)
-    body_action.fast_move_to([.38, -0.39,  0.00, -1.55, -1.96, -0.04,  1.59,  0.00], duration = 0.8)
+    arm_action.fast_move_to([.38, -0.72,  1.02, -2.00, -1.81, -1.05,  1.41,  0.00], duration = 0.8)
+    arm_action.fast_move_to([.38, -0.39,  0.00, -1.55, -1.96, -0.00,  1.59,  0.00], duration = 0.8)
 
-    #
+    # Get arm moving for the first past to human.
+    arm_action.fast_move_to([.38, -1.44,  0.00, -1.59, -1.46,  0.00,  0.00,  1.57], duration = 0.8)
+    arm_action.fast_move_to([.38, -0.39,  0.00, -1.55, -1.96, -0.00,  0.00,  1.57], duration = 0.8)
+    arm_action.fast_move_to([.38, -0.87,  0.00, -1.55, -2.19, -0.00,  0.00,  1.57], duration = 0.8)
+
+    # Pass back to fetch
+    arm_action.fast_move_to([.30, -0.64,  0.00, -1.55, -2.19, -0.00,  0.00,  1.57], duration = 1.5, base_motion = "Left_turn")
+    base_action.

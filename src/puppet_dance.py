@@ -191,48 +191,48 @@ if __name__ == "__main__":
         pass
 
     # Setup clients
-    body_action = FollowTrajectoryClient()
+    arm_action = FollowTrajectoryClient()
     head_action = PointHeadClient()
     base_action = FootWork()
 
     rospy.sleep(1)
     # init configuration
-    body_action.safe_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  1.00,  -1.54], velocity = .5)
+    arm_action.safe_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  1.00,  -1.54], velocity = .5)
     head_action.look_at(0.0, 0.0, 0.0, duration = 1)
     rospy.sleep(1)
 
     # Puppet the left arm
-    body_action.fast_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  0.80,  -1.54], duration = .5, head_motion = "move")
-    body_action.fast_move_to([.38,  0.0, 1.17, 0.00, -2.18, 0.00,  1.00,  -1.54], duration = .6, head_motion = "move")
-    body_action.fast_move_to([.38, 0.05, 1.17, 0.00, -2.18, 0.00,  0.80,  -1.54], duration = .5)
+    arm_action.fast_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  0.80,  -1.54], duration = .5, head_motion = "move")
+    arm_action.fast_move_to([.38,  0.0, 1.17, 0.00, -2.18, 0.00,  1.00,  -1.54], duration = .6, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.05, 1.17, 0.00, -2.18, 0.00,  0.80,  -1.54], duration = .5)
     rospy.sleep(.7)
 
     # Head Isolation
-    body_action.fast_move_to([.38,-0.33,-0.25, 0.00, -1.2, 0.00,  1.56,  0.00], duration = 1.5, head_motion  = "move")
+    arm_action.fast_move_to([.38,-0.33,-0.25, 0.00, -1.2, 0.00,  1.56,  0.00], duration = 1.5, head_motion  = "move")
     rospy.sleep(.8)
     # body_action.fast_move_to([.38,-0.73,-0.25, 0.00, -1.01, 0.00,  1.38,  0.00], duration = 1.2, head_motion = "move")
     # body_action.fast_move_to([.38,-0.5,-0.25, 0.00, -.87, 0.54,  1.09,  -.14], duration = 1.2, head_motion = "move")
-    body_action.fast_move_to([.38,-0.73,-0.48, 0.00, -0.28, 0.00,  0.86,  0.00], duration = 1.0, head_motion = "move")
-    body_action.fast_move_to([.38,-0.33,-0.25, 0.00, -1.2, 0.00,  1.56,  0.00], duration = 1.0, head_motion = "move")
+    arm_action.fast_move_to([.38,-0.73,-0.48, 0.00, -0.28, 0.00,  0.86,  0.00], duration = 1.0, head_motion = "move")
+    arm_action.fast_move_to([.38,-0.33,-0.25, 0.00, -1.2, 0.00,  1.56,  0.00], duration = 1.0, head_motion = "move")
 
     # Turn Body
-    body_action.fast_move_to([.38, 0.22, 0.92, 1.12, -2.0, 0.60,  1.19, -2.48], duration = 1.5, head_motion = "move")
-    body_action.fast_move_to([.38, 0.22, 0.92, 1.12, -2.0, 0.60,  0.75, -2.48], duration = .7, head_motion  = "move")
+    arm_action.fast_move_to([.38, 0.22, 0.92, 1.12, -2.0, 0.60,  1.19, -2.48], duration = 1.5, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.22, 0.92, 1.12, -2.0, 0.60,  0.75, -2.48], duration = .7, head_motion  = "move")
 
     # Upwards body roll
-    body_action.fast_move_to([.38, 0.68, 0.52, 1.08, -1.58, -1.08, -.16, -2.97], duration = 1.5, head_motion = "move")
-    body_action.fast_move_to([.38, 0.68, 0.52, 1.08, -1.58, -1.08, -.44, -2.97], duration = 0.5, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.68, 0.52, 1.08, -1.58, -1.08, -.16, -2.97], duration = 1.5, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.68, 0.52, 1.08, -1.58, -1.08, -.44, -2.97], duration = 0.5, head_motion = "move")
 
     # # Chest pumps
-    body_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96, -.69, -1.47], duration = 1.5, head_motion = "move")
-    body_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
-    body_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96,  -.69, -1.47], duration = .8, head_motion = "move")
-    body_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
-    body_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96,  -.69, -1.47], duration = .8, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96, -.69, -1.47], duration = 1.5, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96,  -.69, -1.47], duration = .8, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.09, 0.56, .61, -1.8, -2.96,  -.69, -1.47], duration = .8, head_motion = "move")
 
     # Turn Body towards camera. End
     rospy.sleep(.5)
-    body_action.fast_move_to([.38, 0.27, 0.15, 1.06, -1.55, -2.8,  -.62, -1.90], duration = .8, head_motion = "move")
-    body_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
-    body_action.fast_move_to([.38, -.08, 0.24, .58, -.87, -3.0, -.21, -1.36], duration = .8, head_motion = "move")
-    body_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = 1.5, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.27, 0.15, 1.06, -1.55, -2.8,  -.62, -1.90], duration = .8, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = .8, head_motion = "move")
+    arm_action.fast_move_to([.38, -.08, 0.24, .58, -.87, -3.0, -.21, -1.36], duration = .8, head_motion = "move")
+    arm_action.fast_move_to([.38, 0.32, 0.31, .75, -1.78, -2.96, -.73, -1.64], duration = 1.5, head_motion = "move")

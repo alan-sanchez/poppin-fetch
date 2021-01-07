@@ -251,27 +251,27 @@ if __name__ == "__main__":
         pass
 
     # Setup clients
-    body_action = FollowTrajectoryClient()
+    arm_action = FollowTrajectoryClient()
     head_action = PointHeadClient()
     base_action = FootWork()
 
     # init configuration
-    body_action.open_gripper()
+    arm_action.open_gripper()
     head_action.look_at(0.5, -0.3, 1.2, frame = "base_link", duration = 1)
-    body_action.safe_move_to([.38, -1.31, .81, -2.86, -1.67, 0.00, 0.00, -1.42], velocity = 0.5)
+    arm_action.safe_move_to([.38, -1.31, .81, -2.86, -1.67, 0.00, 0.00, -1.42], velocity = 0.5)
     rospy.sleep(1)
 
 
     # Start arm motions
-    body_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 1.2)
+    arm_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 1.2)
     for i in range(3):
-        body_action.fast_move_to([0.32, -1.30,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.8)
-        body_action.fast_move_to([0.38, -1.10,  1.20, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.8)
-        body_action.fast_move_to([0.32, -0.90,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.8)
-        body_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.8)
+        arm_action.fast_move_to([0.32, -1.30,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.8)
+        arm_action.fast_move_to([0.38, -1.10,  1.20, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.8)
+        arm_action.fast_move_to([0.32, -0.90,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.8)
+        arm_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.8)
 
     # Fetch stops to view what I am doing
-    body_action.fast_move_to([0.38, -1.24,  1.20, -2.16, -1.49,  0.00, -1.19, -1.42], duration = 1.0,
+    arm_action.fast_move_to([0.38, -1.24,  1.20, -2.16, -1.49,  0.00, -1.19, -1.42], duration = 1.0,
                               head_frame = "base_link",
                               head_pose = [0.2, -1.0, 1.2])
 
@@ -285,26 +285,26 @@ if __name__ == "__main__":
     rospy.sleep(2.4)
 
     # Grab fake shoe lace
-    body_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 1.6,
+    arm_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 1.6,
                               head_frame = "gripper_link",
                               head_pose = [0.0, 0.0, 0.0])
-    body_action.close_gripper()
+    arm_action.close_gripper()
     rospy.sleep(.4)
 
     # move foot
     for i in range(2):
-        body_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
-        body_action.fast_move_to([0.38, -1.54,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 0.8)
-        body_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
-        body_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 0.8)
+        arm_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
+        arm_action.fast_move_to([0.38, -1.54,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 0.8)
+        arm_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
+        arm_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 0.8)
 
     # Thread foot
-    body_action.fast_move_to([0.38, -1.41,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8)
+    arm_action.fast_move_to([0.38, -1.41,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8)
     rospy.sleep(1.6)
 
     # Turn me
-    body_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8)
+    arm_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8)
     rospy.sleep(.8)
 
     # Full arm extension, "Funny Part"
-    body_action.fast_move_to([0.38, -1.11,  1.18, -0.82, -1.49,  0.00,  0.09,  0.27], duration = 0.6)
+    arm_action.fast_move_to([0.38, -1.11,  1.18, -0.82, -1.49,  0.00,  0.09,  0.27], duration = 0.6)
