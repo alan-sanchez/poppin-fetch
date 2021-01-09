@@ -287,16 +287,18 @@ if __name__ == "__main__":
     arm_action.fast_move_to([.38, -1.44,  0.00, -1.59, -1.46,  0.00,  0.00,  1.57], duration = 1.2)
     arm_action.fast_move_to([.38, -0.39,  0.00, -1.55, -1.96, -0.00,  0.00,  1.57], duration = 0.8)
     arm_action.fast_move_to([.38, -0.87,  0.00, -1.55, -2.19, -0.00,  0.00,  1.57], duration = 0.8)
-    rospy.sleep(1)
+    rospy.sleep(4)
 
     # Pass back to fetch
     arm_action.fast_move_to([.30, -0.64,  0.00, -1.55, -2.19, -1.57,  0.00,  0.00], duration = 1.2, base_motion = "Left_turn")
     base_action.right_turn(14)
 
     # Pass to human
-    arm_action.fast_move_to([.30, -0.64,  0.00, -1.55, -2.19, -1.57,  0.90,  0.00], duration = .6)
-    head_action.look_at(0.0, -1.0, 1.0, duration = .6)
-    # rospy.sleep(1)
+    arm_action.fast_move_to([.30, -0.64,  0.00, -1.55, -2.19, -1.57,  0.90,  0.00], duration = .6)#,
+                             # head_frame = "base_link",
+                             # head_pose = [0.2, -1.0, 1.2])
+    head_action.look_at(0.0, -1.0, 1.0, duration = .4)
+    rospy.sleep(4)
 
     # Pass back to fetch, torso move.
     arm_action.fast_move_to([.38, -0.64,  0.00, -1.55, -2.19, -1.57,  0.90,  0.00], duration = 4,
@@ -306,3 +308,16 @@ if __name__ == "__main__":
 
     # Final pass to human
     arm_action.fast_move_to([.26, -0.72,  0.00, -2.45, -2.02, -2.14,  0.54,  0.00], duration = 0.8)
+    rospy.sleep(4)
+
+    # Move back to init configuration
+    arm_action.safe_move_to([.38, -1.16, 0.75, -1.516, -1.14, -0.57, 0.00,  0.00], velocity = 0.5)
+    head_action.look_at(1.0, -0.0, 1.2, duration = 1)
+    rospy.sleep(.5)
+
+
+    # Start Head Motions
+    head_action.look_at(0.2, -1.0, 1.2, duration = .8)
+    head_action.look_at(0.2, -1.0, 1.6, duration = .6)
+    head_action.look_at(0.2, -1.0, 1.2, duration = .6)
+    head_action.look_at(1.0,  0.0, 1.2, duration = .8)
