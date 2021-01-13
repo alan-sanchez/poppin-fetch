@@ -147,7 +147,6 @@ class PointHeadClient(object):
         self.client = actionlib.SimpleActionClient("head_controller/point_head", PointHeadAction)
         rospy.loginfo("Waiting for head_controller...")
         self.client.wait_for_server()
-
         self.base_action = FootWork()
 
     def look_at(self, x, y, z, frame = "gripper_link", duration=1.0, base_motion = None):
@@ -264,11 +263,11 @@ if __name__ == "__main__":
     arm_action.open_gripper()
     arm_action.safe_move_to([.38, -1.31, .81, -2.86, -1.67, 0.00, 0.00, -1.42], velocity = 0.5)
     head_action.look_at(0.5, -0.3, 1.2, frame = "base_link", duration = 1)
-    rospy.sleep(1)
+    rospy.sleep(5)
 
 
     # Start arm motions
-    arm_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 1.2)
+    arm_action.fast_move_to([0.38, -1.10,  1.16, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 1.0)
     for i in range(3):
         arm_action.fast_move_to([0.32, -1.30,  1.27, -0.82, -2.02,  0.00, -0.37, -1.42], duration = 0.8)
         arm_action.fast_move_to([0.38, -1.10,  1.20, -0.82, -1.49,  0.00, -0.37, -1.42], duration = 0.8)
@@ -278,7 +277,7 @@ if __name__ == "__main__":
     # Fetch stops to view what I am doing
     arm_action.fast_move_to([0.38, -1.24,  1.20, -2.16, -1.49,  0.00, -1.19, -1.42], duration = 1.0,
                               head_frame = "base_link",
-                              head_pose = [0.2, -1.0, 1.2])
+                              head_pose = [0.0, -1.0, 1.2])
 
     rospy.sleep(.8)
     # Look at my shoe
@@ -287,7 +286,7 @@ if __name__ == "__main__":
 
     # Looks at my foot motions
     head_action.look_at(0.2, -0.5, 0.9, frame = "base_link", duration = 0.8)
-    rospy.sleep(4.8)
+    rospy.sleep(6.0)
 
     # Grab fake shoe lace
     arm_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 1.8)
@@ -296,22 +295,38 @@ if __name__ == "__main__":
 
     # move foot
     for i in range(2):
-        arm_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
-        arm_action.fast_move_to([0.38, -1.54,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 0.8)
-        arm_action.fast_move_to([0.38, -1.42,  1.41, -0.82, -1.96,  0.00,  0.46,  0.13], duration = 0.8)
-        arm_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -2.16,  0.00,  0.70,  0.13], duration = 0.8)
+        arm_action.fast_move_to([0.38, -1.14,  1.41, -0.82, -2.36,  0.00,  0.70,  0.13], duration = 0.8,
+                                  head_frame = "gripper_link",
+                                  head_pose = [0.0, 0.0, 0.0])
+        arm_action.fast_move_to([0.38, -1.02,  1.41, -0.82, -1.76,  0.00,  0.46,  0.13], duration = 0.8,
+                                  head_frame = "gripper_link",
+                                  head_pose = [0.0, 0.0, 0.0])
+        arm_action.fast_move_to([0.38, -0.91,  1.41, -0.82, -2.36,  0.00,  0.70,  0.13], duration = 0.8,
+                                  head_frame = "gripper_link",
+                                  head_pose = [0.0, 0.0, 0.0])
+        arm_action.fast_move_to([0.38, -1.02,  1.41, -0.82, -1.76,  0.00,  0.46,  0.13], duration = 0.8,
+                                  head_frame = "gripper_link",
+                                  head_pose = [0.0, 0.0, 0.0])
 
     # Thread foot
-    arm_action.fast_move_to([0.38, -1.41,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8,
-                              head_frame = "gripper_link",
-                              head_pose = [0.0, 0.0, 0.0])
-    rospy.sleep(1.6)
+    # arm_action.fast_move_to([0.38, -1.41,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8,
+    #                           head_frame = "gripper_link",
+    #                           head_pose = [0.0, 0.0, 0.0])
+    # rospy.sleep(1.6)
+
+
 
     # Turn me
-    arm_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8,
-                              head_frame = "gripper_link",
-                              head_pose = [0.0, 0.0, 0.0])
-    rospy.sleep(1.4)
+    # arm_action.fast_move_to([0.38, -1.31,  1.41, -0.82, -1.72,  0.00,  0.27,  0.13], duration = 0.8,
+    #                           head_frame = "gripper_link",
+    #                           head_pose = [0.0, 0.0, 0.0])
+    # rospy.sleep(1.4)
+    head_action.look_at(0.0, -1.0, 1.2, frame = "base_link", duration = 1)
+    head_action.look_at(0.0,  0.0, 0.0, frame = "gripper_link", duration = 1)
+    head_action.look_at(0.0, -1.0, 1.2, frame = "base_link", duration = 1)
+
+    rospy.sleep(1.6)
+
 
     # Full arm extension, "Funny Part"
     arm_action.fast_move_to([0.38, -0.79,  0.80, -0.82, -1.21,  0.00,  0.09,  0.27], duration = 0.6,
