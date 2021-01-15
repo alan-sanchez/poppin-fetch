@@ -116,7 +116,7 @@ class FollowTrajectoryClient(object):
 
             if head_frame != None:
                 x, y, z = head_pose
-                self.head_action.look_at(x, y, z, frame = head_frame, duration = .6)
+                self.head_action.look_at(x, y, z, frame = head_frame, duration = .4)
 
             total_time = time.time() - start_time
 
@@ -262,3 +262,59 @@ if __name__ == "__main__":
     base_action = FootWork()
 
     # init configuration
+    arm_action.safe_move_to([0.38, -0.84, 0.87, -2.3, -2.05, 0.52, -1.6, 0.0], velocity = 0.5)
+    head_action.look_at(1.0, -0.0, 1.2, duration = 1)
+    rospy.sleep(4)
+
+    # Begin Tutting
+    arm_action.fast_move_to([0.38, 0.1, 0.77, -1.9, -1.75, 0.77, -1.68, -0.45], duration = 0.8)
+    arm_action.fast_move_to([0.38, 0.1, -0.57, -1.61, -1.53, 2.15, 1.54, 0.13], duration = 1.2)
+    arm_action.fast_move_to([0.38, -0.69, 0.01, 0.0, -1.62, 2.28, 1.57, 0.04], duration = 1.6,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
+
+    # Begin Team Tut
+    arm_action.fast_move_to([0.38, -0.69, 0.01, 0.0, -1.62, 0.65, 1.57, 0.04], duration = 0.8)
+    arm_action.fast_move_to([0.38, -0.69, 0.01, 0.0, -1.62, 0.65, 0.06, 0.04], duration = 0.8)
+    arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, -0.56], duration = 1.6,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
+
+    # Twist Fetch's Elbow
+    arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, 1.00], duration = 0.8,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
+    arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, 2.41], duration = 0.8)
+
+    # Fetch Raises hand
+    arm_action.fast_move_to([0.38, -0.69, 0.01, 0.04, -1.65, 0.69, 0.06, 3.14], duration = 1.6,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
+    arm_action.fast_move_to([0.38, -0.69, 0.01, 0.04, -1.65, 0.69, 1.66, 3.14], duration = 1.2)
+    arm_action.fast_move_to([0.38, -0.69, 0.01, 0.04, -1.65, 2.19, 1.57, 3.14], duration = 1.2,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
+
+    # Fetch arm in the Center
+    arm_action.fast_move_to([0.38, -0.03, 0.01, 0.0, -1.59, -0.04, 1.57, 3.14], duration = 1.2)
+    arm_action.fast_move_to([0.38, -0.03, 0.01, 0.0, -1.59, -0.04, -0.25, 3.14], duration = 1.2)
+    arm_action.fast_move_to([0.38, -0.03, 0.01, 0.0, -1.59, 1.59, -1.54, 3.14], duration = 1.2)
+
+    # Fetch's tut moves me
+    arm_action.fast_move_to([0.38, -0.2, 0.61, 0.0, -2.05, 1.59, -0.03, 3.14], duration = 1.2)
+    arm_action.fast_move_to([0.38, -0.65, 0.03, 0.0, -1.65, 2.07, 1.54, -3.1], duration = 1.2)
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, -1.54, -3.1], duration = 1.6)
+
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, 0.0, -3.1], duration = 0.8)
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, 1.6, -3.1], duration = 0.8)
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, -1.57, -3.1], duration = 1.6)
+
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -0.63, 1.55, -1.57, -3.1], duration = 0.8)
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -0.63, -1.64, -1.57, -3.1], duration = 1.6)
+    #
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -0.63, 0.0, -1.57, 1.85], duration = 1.6)
+    arm_action.fast_move_to([0.38, -0.71, 0.03, -1.57, -2.22, 1.51, -1.57, 0.13], duration = 1.6)
+    arm_action.fast_move_to([0.38, -0.71, 0.03, -1.57, -2.22, 1.51, -1.57, 0.13], duration = 1.6)
+
+    # End pose
+    arm_action.fast_move_to([0.38, -0.84, 0.87, -2.3, -2.05, 0.52, -1.6, 0.0], duration = 1.6)
