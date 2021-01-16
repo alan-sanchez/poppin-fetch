@@ -272,6 +272,7 @@ if __name__ == "__main__":
     arm_action.fast_move_to([0.38, -0.69, 0.01, 0.0, -1.62, 2.28, 1.57, 0.04], duration = 1.6,
                              head_frame = "gripper_link",
                              head_pose = [0.0, 0.0, 0.0])
+    rospy.sleep(1.2)
 
     # Begin Team Tut
     arm_action.fast_move_to([0.38, -0.69, 0.01, 0.0, -1.62, 0.65, 1.57, 0.04], duration = 0.8)
@@ -280,11 +281,13 @@ if __name__ == "__main__":
                              head_frame = "gripper_link",
                              head_pose = [0.0, 0.0, 0.0])
 
+    rospy.sleep(1.2)
+    #
     # Twist Fetch's Elbow
-    arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, 1.00], duration = 0.8,
+    arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, 1.00], duration = 1.2,
                              head_frame = "gripper_link",
                              head_pose = [0.0, 0.0, 0.0])
-    arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, 2.41], duration = 0.8)
+    arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, 2.41], duration = 1.2)
 
     # Fetch Raises hand
     arm_action.fast_move_to([0.38, -0.69, 0.01, 0.04, -1.65, 0.69, 0.06, 3.14], duration = 1.6,
@@ -304,17 +307,23 @@ if __name__ == "__main__":
     arm_action.fast_move_to([0.38, -0.2, 0.61, 0.0, -2.05, 1.59, -0.03, 3.14], duration = 1.2)
     arm_action.fast_move_to([0.38, -0.65, 0.03, 0.0, -1.65, 2.07, 1.54, -3.1], duration = 1.2)
     arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, -1.54, -3.1], duration = 1.6)
-
-    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, 0.0, -3.1], duration = 0.8)
-    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, 1.6, -3.1], duration = 0.8)
+    #
+    # # Tee shape with arms. Moving wrists
+    # arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, 0.0, -3.1], duration = 0.8)
+    arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, 1.6, -3.1], duration = 1.8)
     arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -2.22, 1.55, -1.57, -3.1], duration = 1.6)
+    rospy.sleep(1.6)
 
+    # Bring Fetch's arm out
     arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -0.63, 1.55, -1.57, -3.1], duration = 0.8)
     arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -0.63, -1.64, -1.57, -3.1], duration = 1.6)
-    #
+
+    # Bring Fetch's arm out. Rotate wrist
     arm_action.fast_move_to([0.38, -0.65, 0.03, -1.57, -0.63, 0.0, -1.57, 1.85], duration = 1.6)
     arm_action.fast_move_to([0.38, -0.71, 0.03, -1.57, -2.22, 1.51, -1.57, 0.13], duration = 1.6)
-    arm_action.fast_move_to([0.38, -0.71, 0.03, -1.57, -2.22, 1.51, -1.57, 0.13], duration = 1.6)
+    arm_action.fast_move_to([0.38, -0.71, 0.03, -1.57, -2.22, 1.51, -1.57, 0.13], duration = 1.4)
 
     # End pose
-    arm_action.fast_move_to([0.38, -0.84, 0.87, -2.3, -2.05, 0.52, -1.6, 0.0], duration = 1.6)
+    arm_action.fast_move_to([0.38, -0.84, 0.87, -2.3, -2.05, 0.52, -1.6, 0.0], duration = 1.6,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
