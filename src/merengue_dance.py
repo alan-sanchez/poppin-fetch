@@ -268,10 +268,20 @@ if __name__ == "__main__":
 
     # Begin 8-step. Do two sets
     for i in range(2):
-        arm_action.fast_move_to([0.35, 1.59, 1.00, -1.36, 1.66,  0.50,  0.42, 0.00], duration = .5, base_motion = "Forward")
-        arm_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .7, base_motion = "Foward")
-        arm_action.fast_move_to([0.35, 1.40, 1.00, -1.36, 1.86,  0.50,  0.42, 0.00], duration = .5, base_motion = "Backward")
-        arm_action.fast_move_to([0.35, 1.49, 1.00, -1.36, 1.76,  0.50,  0.42, 0.00], duration = .7, base_motion = "Forward")
+        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
+        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
+        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
+        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
+        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
+        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
+        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
+        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
+
+    # Jprep
+    arm_action.fast_move_to([0.38, 1.46, -0.63, -2.44, 1.55, 0.65, 0.07, 0.0], duration = 1.2, base_motion = "Forward")
+
+    # CW turn. 8 counts
+    base_action.right_turn(20)
 
 
     arm_action.fast_move_to([0.38, 0.1, 0.77, -1.9, -1.75, 0.77, -1.68, -0.45], duration = 0.8)
