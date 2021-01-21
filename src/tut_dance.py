@@ -58,7 +58,7 @@ class FollowTrajectoryClient(object):
         self.scene.removeCollisionObject("keepout")
         self.scene.addBox("keepout", 0.2, 0.5, 0.05, 0.15, 0.0, 0.375)
 
-        #
+        # Include base and head clients to this class
         self.base_action = FootWork()
         self.head_action = PointHeadClient()
 
@@ -77,11 +77,6 @@ class FollowTrajectoryClient(object):
     # This function allows the fecth to move quicker.
     # WARNING: This does not plan around objects.
     def fast_move_to(self,positions, duration = 1, base_motion = None, head_frame = None, head_pose = None):
-        base_motion = base_motion
-        head_frame  = head_frame
-        head_pose   = head_pose
-        # duration_head = duration
-
         if len(self.joint_names) != len(positions):
             print("Invalid trajectory position")
             return False
@@ -95,10 +90,11 @@ class FollowTrajectoryClient(object):
         follow_goal = FollowJointTrajectoryGoal()
         follow_goal.trajectory = trajectory
 
+        # Send goal to action server
         self.fast_client.send_goal(follow_goal)
 
 
-        # condtions to move fetch while head is moving.
+        # condtions to move fetch base or head while arm is moving.
         start_time = time.time()
         total_time = 0
         while total_time < duration:
@@ -118,6 +114,7 @@ class FollowTrajectoryClient(object):
                 x, y, z = head_pose
                 self.head_action.look_at(x, y, z, frame = head_frame, duration = .4)
 
+            # If total time is larger than duration time argument then loop breaks
             total_time = time.time() - start_time
 
         self.fast_client.wait_for_result()
@@ -148,6 +145,7 @@ class PointHeadClient(object):
         rospy.loginfo("Waiting for head_controller...")
         self.client.wait_for_server()
 
+        # Include base clients to this class
         self.base_action = FootWork()
 
     def look_at(self, x, y, z, frame = "base_link", duration=1.0, base_motion = None):
@@ -282,7 +280,7 @@ if __name__ == "__main__":
                              head_pose = [0.0, 0.0, 0.0])
 
     rospy.sleep(1.2)
-    #
+
     # Twist Fetch's Elbow
     arm_action.fast_move_to([0.38, -0.69, 0.01, -1.53, -2.16, 0.65, 0.06, 1.00], duration = 1.2,
                              head_frame = "gripper_link",
