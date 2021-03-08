@@ -10,7 +10,6 @@ from moveit_python import (MoveGroupInterface,
                            PlanningSceneInterface,
                            PickPlaceInterface)
 from moveit_python.geometry import rotate_pose_msg_by_euler_angles
-from moveit_python import PlanningSceneInterface
 
 # Import from messages
 from control_msgs.msg import FollowJointTrajectoryAction,FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
@@ -93,6 +92,7 @@ class FollowTrajectoryClient(object):
 
         else:
             pass
+
 # Point the head using controller
 class PointHeadClient(object):
 
@@ -138,7 +138,6 @@ class FootWork(object):
         lin_cmds = [-0.05, 0.05, -0.05, 0.05]
 
         # Set angular rotation around z access to 1 (turn left/CCW)
-
         for i in range(len(ang_cmds)):
             self.twist.angular.z = ang_cmds[i]
             self.twist.linear.x  = lin_cmds[i]

@@ -10,14 +10,13 @@ from moveit_python import (MoveGroupInterface,
                            PlanningSceneInterface,
                            PickPlaceInterface)
 from moveit_python.geometry import rotate_pose_msg_by_euler_angles
-from moveit_python import PlanningSceneInterface
 
 # Import from messages
-from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
-from control_msgs.msg import PointHeadAction, PointHeadFeedback,PointHeadGoal
-from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal
-from geometry_msgs.msg import PoseStamped, Twist, Point
-from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
+from control_msgs.msg    import FollowJointTrajectoryAction, FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
+from control_msgs.msg    import PointHeadAction, PointHeadFeedback,PointHeadGoal
+from grasping_msgs.msg   import FindGraspableObjectsAction, FindGraspableObjectsGoal
+from geometry_msgs.msg   import PoseStamped, Twist, Point
+from moveit_msgs.msg     import PlaceLocation, MoveItErrorCodes
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 
@@ -197,7 +196,7 @@ if __name__ == "__main__":
 
     rospy.sleep(1)
     # init configuration
-    arm_action.safe_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  1.00,  -1.54], velocity = .5)
+    arm_action.safe_move_to([.38, -.32, 1.17, 0.00, -2.18, 0.00,  1.00,  -1.54], velocity = 0.8)
     head_action.look_at(0.0, 0.0, 0.0, duration = 1)
     rospy.sleep(1)
 

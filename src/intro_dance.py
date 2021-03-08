@@ -10,7 +10,6 @@ from moveit_python import (MoveGroupInterface,
                            PlanningSceneInterface,
                            PickPlaceInterface)
 from moveit_python.geometry import rotate_pose_msg_by_euler_angles
-from moveit_python import PlanningSceneInterface
 
 # Import from messages
 from control_msgs.msg import FollowJointTrajectoryAction,FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
@@ -122,20 +121,20 @@ class FootWork(object):
     def left_turn(self, iter):
         # Set angular rotation around z access to 1 (turn left/CCW)
         self.twist.angular.z = 1.0
-
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
+            
         # Reset the angular rotation value to be zero
         self.twist.angular.z = 0.0
 
     def right_turn(self, iter):
         # Set angular rotation around z access to -1 (turn right/CW)
         self.twist.angular.z = -1.0
-
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
+
         # Reset the angular rotation value to be zero
         self.twist.angular.z = 0.0
 
