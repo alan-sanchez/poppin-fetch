@@ -249,7 +249,7 @@ class FootWork(object):
 
 if __name__ == "__main__":
     # Create a node
-    rospy.init_node("true_dance", anonymous = False)
+    rospy.init_node("meregnue_dance", anonymous = False)
 
     # Make sure sim time is working
     while not rospy.Time.now():
