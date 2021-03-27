@@ -259,6 +259,16 @@ if __name__ == "__main__":
     base_action = FootWork()
 
     # init configuration
-    arm_action.safe_move_to([0.38, -0.84, 0.87, -2.3, -2.05, 0.52, -1.6, 0.0], velocity = 0.5)
+    arm_action.safe_move_to([0.36, 0.0, 1.36, 0.0, -2.01, 0.0, 0.38, 0.0], velocity = 0.5)
     head_action.look_at(1.0, -0.0, 1.2, duration = 1)
     rospy.sleep(4)
+
+    # Show Fetch's Face
+    arm_action.fast_move_to([0.36, 0.0, 1.36, 0.0, -2.11, 0.0, -0.69, 0.0], duration = 2.0,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
+
+    # Side View of Fetch's Face
+    arm_action.fast_move_to([0.33, 1.33, -0.14, 1.21, -0.37, 0.37, -0.99, -0.17], duration = 2.0,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
