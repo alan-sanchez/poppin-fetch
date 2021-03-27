@@ -226,7 +226,7 @@ class FootWork(object):
 
     def move_forward(self,iter):
         # Set angular rotation around z access to -1 (turn right/CW)
-        self.twist.linear.x = 1.0
+        self.twist.linear.x = 0.5
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
@@ -269,6 +269,12 @@ if __name__ == "__main__":
                              head_pose = [0.0, 0.0, 0.0])
 
     # Side View of Fetch's Face
-    arm_action.fast_move_to([0.33, 1.33, -0.14, 1.21, -0.37, 0.37, -0.99, -0.17], duration = 2.0,
+    arm_action.fast_move_to([0.36, 1.33, -0.14, 1.21, -0.37, 0.37, -0.99, -0.17], duration = 3.0,
                              head_frame = "gripper_link",
                              head_pose = [0.0, 0.0, 0.0])
+    rospy.sleep(2)
+
+    # Head Moving
+    for i in range(6):
+        head_action.look_at(0.0, 0.5, 0.0, frame = "gripper_link", duration=0.6, base_motion = "Forward")
+        head_action.look_at(0.0, -0.5,0.0, frame = "gripper_link", duration=0.6, base_motion = "Forward")
