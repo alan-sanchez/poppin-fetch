@@ -265,26 +265,15 @@ if __name__ == "__main__":
     head_action.look_at(1.0, -0.0, 1.2, duration = 1)
     rospy.sleep(4)
 
-    # Begin 8-step. Do two sets
-    for i in range(2):
-        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
-        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
-        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
-        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Forward")
-        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
-        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
-        arm_action.fast_move_to([0.38, 1.46, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
-        arm_action.fast_move_to([0.38, 1.59, 0.65, -1.39, 1.55, 0.0, 0.39, 0.0], duration = .6, base_motion = "Backward")
-
-    # Jprep
+    # Begin 8-step.
+    base_action.move_forward(5)
+    rospy.sleep(.5)
     arm_action.fast_move_to([0.38, 1.46, -0.63, -2.44, 1.55, 0.65, 0.07, 0.0], duration = 1.2, base_motion = "Forward")
 
     # CW turn. 8 counts
-    base_action.right_turn(20)
+    rospy.sleep(.5)
+    base_action.right_turn(50)
+    rospy.sleep(.5)
 
-
-    arm_action.fast_move_to([0.38, 0.1, 0.77, -1.9, -1.75, 0.77, -1.68, -0.45], duration = 0.8)
-    arm_action.fast_move_to([0.38, 0.1, -0.57, -1.61, -1.53, 2.15, 1.54, 0.13], duration = 1.2)
-    arm_action.fast_move_to([0.38, -0.69, 0.01, 0.0, -1.62, 2.28, 1.57, 0.04], duration = 1.6,
-                             head_frame = "gripper_link",
-                             head_pose = [0.0, 0.0, 0.0])
+    # Put gripper on human's shoulder.
+    arm_action.fast_move_to([0.38, 1.46, -0.63, -2.44, 1.55, 0.65, 0.07, 0.0], duration = 1.2, base_motion = "Forward")
