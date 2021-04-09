@@ -120,13 +120,12 @@ class PointHeadClient(object):
         goal.min_duration = rospy.Duration(duration)
         self.client.send_goal(goal)
 
-        # condtions to move fetch while head is moving.
+        # Condtions to move fetch while head is moving.
         start_time = time.time()
         total_time = 0
         while total_time < duration:
             if self.base_motion == "Forward":
                 self.base_action.move_forward(1)
-
             elif self.base_motion == "Backward":
                 self.base_action.move_backward(1)
             else:
@@ -226,6 +225,7 @@ if __name__ == "__main__":
     arm_action.fast_move_to([.3, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
     base_action.move_backward(6)
     rospy.sleep(.7)
+    
     # Forward Motion with height change
     arm_action.fast_move_to([.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0], duration = .5)
     base_action.move_backward(2)
