@@ -259,12 +259,12 @@ if __name__ == "__main__":
     base_action = FootWork()
 
     # init configuration
-    arm_action.safe_move_to([0.36, 0.0, 1.36, 0.0, -2.01, 0.0, 0.38, 0.0], velocity = 0.5)
+    arm_action.safe_move_to([0.36, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -1.6], velocity = 0.5)
     head_action.look_at(1.0, -0.0, 1.2, duration = 1)
     rospy.sleep(4)
 
     # Show Fetch's Face
-    arm_action.fast_move_to([0.36, 0.0, 1.36, 0.0, -2.11, 0.0, -0.69, 0.0], duration = 2.0,
+    arm_action.fast_move_to([0.36, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 2.0,
                              head_frame = "gripper_link",
                              head_pose = [0.0, 0.0, 0.0])
 
@@ -279,10 +279,44 @@ if __name__ == "__main__":
         head_action.look_at(0.0, 0.5, 0.0, frame = "gripper_link", duration=0.6, base_motion = "Forward")
         head_action.look_at(0.0, -0.5,0.0, frame = "gripper_link", duration=0.6, base_motion = "Forward")
 
-    arm_action.fast_move_to([0.36, 1.33, -0.14, 1.21, -0.37, 0.37, -0.99, -0.01], duration = 3.0,
+    # Hold camera for bboy stuff
+    arm_action.fast_move_to([0.36, 1.33, -0.14, 1.21, -0.37, 0.37, -0.99, -0.01], duration = 1.0,
                          head_frame = "gripper_link",
                          head_pose = [0.0, 0.0, 0.0])
 
+    # Move head while human is breakin
     for i in range(6):
         head_action.look_at(0.0, 0.5, 0.0, frame = "gripper_link", duration=0.6, base_motion = None)
-        head_action.look_at(0.0, -0.5,0.0, frame = "gripper_link", duration=0.6, base_motion = None)                
+        head_action.look_at(0.0, -0.5,0.0, frame = "gripper_link", duration=0.6, base_motion = None)
+
+    # Move arm to transfer phone
+    arm_action.fast_move_to([0.36, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 2.0,
+                             head_frame = "gripper_link",
+                             head_pose = [0.0, 0.0, 0.0])
+
+    # Open gripper and pass phone to human
+    rospy.sleep(.5)
+    arm_action.open_gripper()
+    rospy.sleep(.25)
+
+    # Tuck arm and look at phone
+    arm_action.fast_move_to([0.36, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 2.0,
+                             head_frame = "base_link",
+                             head_pose = [0.5, -0.5, 1.2])
+
+    # head_action.look_at(0.5, 0.5, 0.0, frame )
+
+    arm_action.fast_move_to([0.30, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 1.0, base_motion = "Forward")
+    arm_action.fast_move_to([0.25, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 1.0, base_motion = "Forward")
+    arm_action.fast_move_to([0.20, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 1.0, base_motion = "Forward")
+    arm_action.fast_move_to([0.15, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 1.0, base_motion = "Forward")
+    arm_action.fast_move_to([0.10, 1.07, 0.05, 1.52, -1.59, 0.05, -1.14, -0.72], duration = 1.0, base_motion = "Forward")
+
+    base_action.right_turn(60)
+    base_action.left_turn(60)
+
+
+    # Move head while human is breakin
+    # for i in range(6):
+    #     head_action.look_at(0.0, 0.5, 0.0, frame = "gripper_link", duration=0.6, base_motion = None)
+    #     head_action.look_at(0.0, -0.5,0.0, frame = "gripper_link", duration=0.6, base_motion = None)
