@@ -14,6 +14,8 @@ from moveit_python.geometry import rotate_pose_msg_by_euler_angles
 # Import from messages
 from control_msgs.msg import FollowJointTrajectoryAction,FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
 from control_msgs.msg import PointHeadAction,PointHeadFeedback, PointHeadGoal
+from control_msgs.msg import GripperCommandGoal, GripperCommandAction, GripperCommandFeedback
+
 from grasping_msgs.msg import FindGraspableObjectsAction, FindGraspableObjectsGoal
 from geometry_msgs.msg import PoseStamped, Twist, Point
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
@@ -37,6 +39,16 @@ class FollowTrajectoryClient(object):
         # Set the names of the joints
         self.joint_names = ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
+
+        # Set up action client for gripper
+        rospy.loginfo("Waiting for Gripper client")
+        self.gripper_client = actionlib.SimpleActionClient('gripper_controller/gripper_action', GripperCommandAction)
+        self.gripper_client.wait_for_server()
+        rospy.loginfo("...connected")
+
+        # gripper params
+        self.gripper_closed_pos = 0  # The position for a fully-closed gripper (meters).
+        self.gripper_open_pos = 0.10  # The position for a fully-open gripper (meters).
 
         # Padding does not work (especially for self collisions)
         # So we are adding a box above the base of the robot
@@ -101,6 +113,21 @@ class FollowTrajectoryClient(object):
 
         else:
             pass
+
+    def open_gripper(self):
+        # Functions opens Grippers
+        goal = GripperCommandGoal()
+        goal.command.position = self.gripper_open_pos
+        self.gripper_client.send_goal(goal)
+        self.gripper_client.wait_for_result()
+
+
+    def close_gripper(self):
+        # Functions closses Grippers
+        goal = GripperCommandGoal()
+        goal.command.position = self.gripper_closed_pos
+        self.gripper_client.send_goal(goal)
+        self.gripper_client.wait_for_result()
 
 # Point the head using controller
 class PointHeadClient(object):
@@ -210,6 +237,7 @@ if __name__ == "__main__":
     head_action = PointHeadClient()
     base_action = FootWork()
 
+
     # init configuration
     rospy.sleep(.5)
     head_action.look_at(1.0, 0.0, 1.2, duration = 1)
@@ -286,6 +314,10 @@ if __name__ == "__main__":
         arm_action.fast_move_to([0.28, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0], duration = 0.4, base_motion = "Forward")
         arm_action.fast_move_to([0.3, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0], duration = 0.4, base_motion = "Forward")
 
-    # Grab sobrero and remove. 
+    # Grab sobrero and remove.
     arm_action.fast_move_to([0.3, -1.33, 0.04, 2.64, 1.94, 0.0, 1.03, 0.69], duration = 1)
+    arm_action.close_gripper()
     arm_action.fast_move_to([0.3, -1.31, -0.29, 2.64, 1.33, 0.0, 0.59, 0.69], duration = 1)
+
+    rospy.sleep(5)
+    arm_action.open_gripper()
