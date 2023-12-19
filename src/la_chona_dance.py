@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Import what we need
+## Import what we need
 import copy
 import actionlib
 import rospy
@@ -11,7 +11,7 @@ from moveit_python import (MoveGroupInterface,
                            PickPlaceInterface)
 from moveit_python.geometry import rotate_pose_msg_by_euler_angles
 
-# Import from messages
+## Import from message types
 from control_msgs.msg import FollowJointTrajectoryAction,FollowJointTrajectoryFeedback, FollowJointTrajectoryGoal
 from control_msgs.msg import PointHeadAction,PointHeadFeedback, PointHeadGoal
 from control_msgs.msg import GripperCommandGoal, GripperCommandAction, GripperCommandFeedback
@@ -24,34 +24,34 @@ from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 class FollowTrajectoryClient(object):
     def __init__(self):
-        # Setup action client that plans around objects
+        ## Setup action client that plans around objects. This is ideal for getting robot to move to it's initial position
         rospy.loginfo("Waiting for MoveIt...")
-        self.safe_client = MoveGroupInterface("arm_with_torso", "base_link")
+        self.move_group = MoveGroupInterface("arm_with_torso", "base_link")
         rospy.loginfo("...connected")
 
-        # Setup action client that moves the fetch "quicker" than the previous client
+        ## Setup action client that allows us to use the feedback callback
         self.fast_client = actionlib.SimpleActionClient("/arm_with_torso_controller/follow_joint_trajectory" ,
                                                    FollowJointTrajectoryAction)
         rospy.loginfo("Waiting for Joint trajectory...")
         self.fast_client.wait_for_server()
         rospy.loginfo("...connected")
 
-        # Set the names of the joints
+        ## Set the names of the joints
         self.joint_names = ["torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
                   "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"]
 
-        # Set up action client for gripper
+        ## Set up action client for gripper
         rospy.loginfo("Waiting for Gripper client")
         self.gripper_client = actionlib.SimpleActionClient('gripper_controller/gripper_action', GripperCommandAction)
         self.gripper_client.wait_for_server()
         rospy.loginfo("...connected")
 
-        # gripper params
+        ## gripper params
         self.gripper_closed_pos = 0  # The position for a fully-closed gripper (meters).
         self.gripper_open_pos = 0.10  # The position for a fully-open gripper (meters).
 
-        # Padding does not work (especially for self collisions)
-        # So we are adding a box above the base of the robot
+        ## Padding does not work (especially for self collisions)
+        ## So we are adding a box above the base of the robot
         self.scene = PlanningSceneInterface("base_link")
         self.scene.removeCollisionObject("keepout")
         self.scene.addBox("keepout", 0.2, 0.5, 0.05, 0.15, 0.0, 0.375)
@@ -59,18 +59,18 @@ class FollowTrajectoryClient(object):
         self.base_action = FootWork()
         self.head_action = PointHeadClient()
 
-    # Function that plans and moves fetch around the "keepout" object.
-    # Function takes both the arm_and_torso joint positions and velocity arguments.
+    ## Function that plans and moves fetch around the "keepout" object.
+    ## Function takes both the arm_and_torso joint positions and velocity arguments.
     def safe_move_to(self, positions, velocity=1):
-        # Execute motion with the moveToJointPosition function.
-        # while not rospy.is_shutdown():
-        result = self.safe_client.moveToJointPosition(self.joint_names,
+        ## Execute motion with the moveToJointPosition function.
+        ## while not rospy.is_shutdown():
+        result = self.move_group.moveToJointPosition(self.joint_names,
                                                  positions,
                                                  0.0,
                                                  max_velocity_scaling_factor=velocity)
 
-    # This function allows the fecth to move quicker.
-    # WARNING: This does not plan around objects.
+    ## This function allows the fecth to move quicker.
+    ## WARNING: This does not plan around objects.
     def fast_move_to(self,positions, duration = 1, base_motion = None, head_motion = None):
         self.base_motion = base_motion
         self.head_motion = head_motion
@@ -115,7 +115,7 @@ class FollowTrajectoryClient(object):
             pass
 
     def open_gripper(self):
-        # Functions opens Grippers
+        ## Functions opens Grippers
         goal = GripperCommandGoal()
         goal.command.position = self.gripper_open_pos
         self.gripper_client.send_goal(goal)
@@ -123,17 +123,17 @@ class FollowTrajectoryClient(object):
 
 
     def close_gripper(self):
-        # Functions closses Grippers
+        ## Functions closses Grippers
         goal = GripperCommandGoal()
         goal.command.position = self.gripper_closed_pos
         self.gripper_client.send_goal(goal)
         self.gripper_client.wait_for_result()
 
-# Point the head using controller
+## Point the head using controller
 class PointHeadClient(object):
 
     def __init__(self):
-        # Setup action client for the head movement
+        ## Setup action client for the head movement
         self.client = actionlib.SimpleActionClient("head_controller/point_head", PointHeadAction)
         rospy.loginfo("Waiting for head_controller...")
         self.client.wait_for_server()
@@ -154,10 +154,10 @@ class PointHeadClient(object):
 class FootWork(object):
 
     def __init__(self):
-        # Initialize publisher.The Fetch will listen for Twist messages on the cmd_vel topic.
+        ## Initialize publisher.The Fetch will listen for Twist messages on the cmd_vel topic.
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
 
-        # Set up a twist message
+        ## Set up a twist message
         self.twist = Twist()
         self.twist.linear.x = 0.0
         self.twist.linear.y = 0.0
@@ -166,127 +166,127 @@ class FootWork(object):
         self.twist.angular.y = 0.0
         self.twist.angular.z = 0.0
 
-        # Limit the publication rate.
+        ## Limit the publication rate.
         self.rate = rospy.Rate(10)
 
     def wide_turn(self, iter):
-        # Set angular rotation around z access to 1 (turn left/CCW)
+        ## Set angular rotation around z access to 1 (turn left/CCW)
         self.twist.angular.z = -1
         self.twist.linear.x = 0.6
 
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
-        # Reset the angular rotation value to be zero
+        ## Reset the angular rotation value to be zero
         self.twist.angular.z = 0.0
         self.twist.linear.x = 0.0
 
     def left_turn(self, iter):
-        # Set angular rotation around z access to 1 (turn left/CCW)
+        ## Set angular rotation around z access to 1 (turn left/CCW)
         self.twist.angular.z = 1.0
 
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
-        # Reset the angular rotation value to be zero
+        ## Reset the angular rotation value to be zero
         self.twist.angular.z = 0.0
 
 
     def right_turn(self, iter):
-        # Set angular rotation around z access to -1 (turn right/CW)
+        ## Set angular rotation around z access to -1 (turn right/CW)
         self.twist.angular.z = -.90
 
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
-        # Reset the angular rotation value to be zero
+        ## Reset the angular rotation value to be zero
         self.twist.angular.z = 0.0
 
     def move_forward(self,iter):
-        # Set angular rotation around z access to -1 (turn right/CW)
+        ## Set angular rotation around z access to -1 (turn right/CW)
         self.twist.linear.x = 0.2
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
 
-        # Reset the angular rotation value to be zero
+        ## Reset the angular rotation value to be zero
         self.twist.linear.x = 0.0
 
     def move_backward(self,iter):
-        # Set angular rotation around z access to -1 (turn right/CW)
+        ## Set angular rotation around z access to -1 (turn right/CW)
         self.twist.linear.x = -0.2
         for i in range(iter):
             self.pub.publish(self.twist)
             self.rate.sleep()
 
-        # Reset the angular rotation value to be zero
+        ## Reset the angular rotation value to be zero
         self.twist.linear.x = 0.0
 
 
 
 if __name__ == "__main__":
-    # Create a node
+    ## Create a node
     rospy.init_node("la_chona_dance", anonymous = False)
 
-    # Make sure sim time is working
+    ## Make sure sim time is working
     while not rospy.Time.now():
         pass
 
-    # Setup clients
+    ## Setup clients
     arm_action = FollowTrajectoryClient()
     head_action = PointHeadClient()
     base_action = FootWork()
 
 
-    # init configuration
+    ## init configuration
     rospy.sleep(.5)
     head_action.look_at(1.0, 0.0, 1.2, duration = 1)
     arm_action.safe_move_to([0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], velocity = .5)
     rospy.sleep(1)
 
-    # 4 basics moving forward
+    ## 4 basics moving forward
     for i in range(4):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Forward")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Forward")
 
-    # 4 basics moving forward
+    ## 4 basics moving forward
     for i in range(4):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Backward")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Backward")
 
-    # 2 loops of right and left turns
+    ## 2 loops of right and left turns
     for i in range(2):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Right_turn")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Right_turn")
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Left_turn")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Left_turn")
 
-    # 2 basics turning right
+    ## 2 basics turning right
     for i in range(2):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Right_turn")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Right_turn")
 
-    # 2 basics moving forward
+    ## 2 basics moving forward
     for i in range(2):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Forward")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Forward")
 
-    # 2 basics turning left
+    ## 2 basics turning left
     for i in range(3):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Left_turn")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Left_turn")
 
-    # 2 basics moving forward
+    ## 2 basics moving forward
     for i in range(3):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Forward")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Forward")
 
-    # 2 basics turning right
+    ## 2 basics turning right
     for i in range(2):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Right_turn")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Right_turn")
 
-    # 3 basics moving backward
+    ## 3 basics moving backward
     for i in range(2):
         arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Backward")
         arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4, base_motion = "Backward")
@@ -294,27 +294,27 @@ if __name__ == "__main__":
 
     rospy.sleep(.4)
 
-    # Only 3 movements for torso. Goes better with song
+    ## Only 3 movements for torso. Goes better with song
     arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4)
     arm_action.fast_move_to([0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4)
     arm_action.fast_move_to([0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0], duration = 0.4)
 
-    # Begin wide left turn while changing new arm configuration
+    ## Begin wide left turn while changing new arm configuration
     arm_action.fast_move_to([0.3, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0], duration = 4.0, base_motion = "Wide_turn")
 
     rospy.sleep(.4)
 
-    # 7 basics turning left
+    ## 7 basics turning left
     for i in range(7):
         arm_action.fast_move_to([0.28, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0], duration = 0.4, base_motion = "Left_turn")
         arm_action.fast_move_to([0.3, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0], duration = 0.4, base_motion = "Left_turn")
 
-    # 4 basics moving forward
+    ## 4 basics moving forward
     for i in range(4):
         arm_action.fast_move_to([0.28, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0], duration = 0.4, base_motion = "Forward")
         arm_action.fast_move_to([0.3, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0], duration = 0.4, base_motion = "Forward")
 
-    # Grab sobrero and remove.
+    ## Grab sobrero and remove
     arm_action.fast_move_to([0.3, -1.33, 0.04, 2.64, 1.94, 0.0, 1.03, 0.69], duration = 1)
     arm_action.close_gripper()
     arm_action.fast_move_to([0.3, -1.31, -0.29, 2.64, 1.33, 0.0, 0.59, 0.69], duration = 1)
