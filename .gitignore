@@ -6,3 +6,4 @@
 /src/movegroupinterface.py
 /src/test_move_fetch.py
 /src/tuck_arm.py
+.vscode/*
