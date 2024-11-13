@@ -1,4 +1,4 @@
-# Fetch Dance Bot 🎶🤖💃
+# Poppin Fetch: Dancing Robot 🎶🤖💃
 
 Welcome to the **Fetch Dance Bot** project! In my spare time, I program a **Fetch manipulator robot** to create engaging dance routines using expressive motion. This project merges robotics and art, bringing life and personality to the robot through dance.
 
