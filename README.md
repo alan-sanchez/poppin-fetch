@@ -8,6 +8,11 @@ The Fetch Dance Bot leverages the **MoveIt!** open-source framework for advanced
 
 This project is one of my personal favorites, as it combines technical precision with artistic expression, showcasing the potential of robots to create expressive, captivating performances.
 
+Videos can be found here: [Instagram Link](https://www.instagram.com/p/CJHvPiNnuZh/?hl=en)
+
+![Fetch Dance Bot in Action](media/dance_image.png)
+
+
 <!-- ## Features
 
 - **Expressive Motion**: Designed to make the robot's movements more engaging and lifelike.
