@@ -4,22 +4,31 @@
 #include <string>
 #include <algorithm> // for std::find
 
-// // Callback function to handle incoming messages
+/*
+* Function: callback
+*
+* Description: Callback function to handle incoming `JointState` messages
+* and printing those values in the terminal
+* 
+* Parameters:
+*   msg (JointState): The JoinState message type
+*/
 void callback(const sensor_msgs::JointState::ConstPtr& msg) {
     // // Joint names and their positions
     std::vector<std::string> names = msg->name;
     std::vector<double> positions = msg->position;
 
-    // Define the joints we're interested in
+    // // Define the joints we're interested as a string vector
     std::vector<std::string> joints = {
         "torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint",
         "upperarm_roll_joint", "elbow_flex_joint", "forearm_roll_joint",
         "wrist_flex_joint", "wrist_roll_joint"
     };
 
-    // Store the joint positions for the specified joints
+    // /// Store the joint positions for the specified joints
     std::vector<double> joint_positions;
 
+    // // 
     for (const auto& joint : joints) {
         // Find the index of each joint name in the names vector
         auto it = std::find(names.begin(), names.end(), joint);
