@@ -1,7 +1,19 @@
+// // Imports the ROS client library for C++. This provides the necessary 
+// // functions and classes for creating nodes, subscribing to topics, logging, 
+// // and managing node execution
 #include <ros/ros.h>
+
+// // Imports the JointState message type, which is part of the sensor_msgs package.
 #include <sensor_msgs/JointState.h>
+
+// // #include <vector> and #include <string>: Includes the std::vector and std::string 
+// // classes from the C++ standard library, used to handle dynamic arrays of strings 
+// // and doubles
 #include <vector>
 #include <string>
+
+// // This library provides standard functions, includiong std::find, which is used to
+// // search for an element within a container
 #include <algorithm> // for std::find
 
 /*
@@ -14,7 +26,8 @@
 *   msg (JointState): The JoinState message type
 */
 void callback(const sensor_msgs::JointState::ConstPtr& msg) {
-    // // Joint names and their positions
+    // // We use -> to access the pointed-to object (ConstPtr&) members of the object. 
+    // // In this instance, the code is acessing the name and position members
     std::vector<std::string> names = msg->name;
     std::vector<double> positions = msg->position;
 
@@ -25,10 +38,14 @@ void callback(const sensor_msgs::JointState::ConstPtr& msg) {
         "wrist_flex_joint", "wrist_roll_joint"
     };
 
-    // /// Store the joint positions for the specified joints
+    // // Store the joint positions for the specified joints
     std::vector<double> joint_positions;
 
-    // // 
+    // // Loop iterates through each joint in joints, checking if it exists in names.
+    // // const: This ensures that each element is read-only inside the loop (We don't 
+    // //   accidentally modify the joint name)
+    // // auto&: auto deduces the type automatically (std::string). The & makes joint a reference to 
+    // //   avoid copying the string, which is more efficient, especially for larger objects
     for (const auto& joint : joints) {
         // Find the index of each joint name in the names vector
         auto it = std::find(names.begin(), names.end(), joint);
