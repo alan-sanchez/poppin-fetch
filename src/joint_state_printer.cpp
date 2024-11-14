@@ -47,27 +47,29 @@ void callback(const sensor_msgs::JointState::ConstPtr& msg) {
     // // auto&: auto deduces the type automatically (std::string). The & makes joint a reference to 
     // //   avoid copying the string, which is more efficient, especially for larger objects
     for (const auto& joint : joints) {
-        // Find the index of each joint name in the names vector
+        // // Find the index of each joint name in the names vector
+        // // std::find returns an iterator first occurrence of the specified element within a range.
+        // // 
         auto it = std::find(names.begin(), names.end(), joint);
         if (it != names.end()) {
             int index = std::distance(names.begin(), it);
-            // Round the position to 2 decimal places
+            // // Round the position to 2 decimal places
             joint_positions.push_back(std::round(positions[index] * 100) / 100.0);
         }
     }
 
-    // Print the joint positions
+    // // Print the joint positions
     for (const auto& pos : joint_positions) {
         std::cout << pos << " ";
     }
     std::cout << std::endl;
 
-    // Shut down ROS node after printing
+    // // Shut down ROS node after printing
     ros::shutdown();
 }
 
 int main(int argc, char** argv) {
-    // Initialize the ROS node
+    // // Initialize the ROS node
     ros::init(argc, argv, "joint_state_printer");
     ros::NodeHandle nh;
 
