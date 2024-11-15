@@ -47,17 +47,24 @@ void callback(const sensor_msgs::JointState::ConstPtr& msg) {
     // // auto&: auto deduces the type automatically (std::string). The & makes joint a reference to 
     // //   avoid copying the string, which is more efficient, especially for larger objects
     for (const auto& joint : joints) {
+        
         // // Find the index of each joint name in the names vector
         // // std::find returns an iterator first occurrence of the specified element within a range.
-        // // 
-        auto it = std::find(names.begin(), names.end(), joint);
-        if (it != names.end()) {
-            int index = std::distance(names.begin(), it);
-            // // Round the position to 2 decimal places
+        // // names.end() is an iterator position one past the last element of the container. 
+        // //  it doesn't point to any valid element. 
+        auto iter = std::find(names.begin(), names.end(), joint);
+        if (iter != names.end()) {
+
+            // // std::distance calculates the number of elements between names.begin() and it,
+            // //  effectively giving us the index of joint within names.
+            int index = std::distance(names.begin(), iter);
+
+            // // positions[index] gives us the position of the current joint from index.
+            // // std::round rounds the position to two decimals places.
+            // // .push_back() adds an element to the nend of the container
             joint_positions.push_back(std::round(positions[index] * 100) / 100.0);
         }
     }
-
     // // Print the joint positions
     for (const auto& pos : joint_positions) {
         std::cout << pos << " ";
@@ -68,12 +75,26 @@ void callback(const sensor_msgs::JointState::ConstPtr& msg) {
     ros::shutdown();
 }
 
+
+/*
+* Function: main
+*
+* Description: This is the entry point of a c++ program (where execution starts)
+* 
+* Parameters:
+*   argc (int): The number of command-line arguments passed to the program (including prgm name)
+*   argv (char**): An array of c-style strings representing the CL arguments. 
+*/
 int main(int argc, char** argv) {
     // // Initialize the ROS node
     ros::init(argc, argv, "joint_state_printer");
+
+    // // Creating a Nodehandle object to interact with the ROS system
+    // // This provides acces to ROS functionalites (subscribe, publish, interact w/ services and params)
     ros::NodeHandle nh;
 
-    // Subscribe to the "joint_states" topic and specify the callback function
+    // // Subscribe to the "joint_states" topic and specify the callback function
+    // // agruments follow this order: "topic_name", Queue_size, callback_function
     ros::Subscriber subscriber = nh.subscribe("joint_states", 1000, callback);
 
     // Give control to ROS to process incoming messages
