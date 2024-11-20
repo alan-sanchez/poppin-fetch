@@ -1,13 +1,13 @@
 #ifndef POINT_HEAD_CLIENT_H
 #define POINT_HEAD_CLIENT_H
 
-// Include ROS core library for general ROS functionality
+// // Include ROS core library for general ROS functionality
 #include <ros/ros.h>
 
-// Include the ActionLib library for creating action clients
+// // Include the ActionLib library for creating action clients
 #include <actionlib/client/simple_action_client.h>
 
-// Include the PointHeadAction message type for sending goals to the head controller
+// // Include the PointHeadAction message type for sending goals to the head controller
 #include <control_msgs/PointHeadAction.h>
 
 /**
