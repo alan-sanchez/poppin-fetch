@@ -131,6 +131,7 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
+## Executable for joint state printer
 add_executable(joint_state_printer
   src/joint_state_printer.cpp
 )
@@ -139,11 +140,13 @@ target_link_libraries(joint_state_printer
   ${catkin_LIBRARIES}
 )
 
-add_executable(la_chona
+## Executable for La Chona dance
+add_executable(la_chona_dance
   src/la_chona_dance.cpp
   src/PointHeadClient.cpp
+  src/Footwork.cpp
 )
 
-target_link_libraries(la_chona
+target_link_libraries(la_chona_dance
   ${catkin_LIBRARIES}
 )
