@@ -49,7 +49,6 @@ private:
     
     // // Limits the frequency of publshing Twist messages
     ros::Rate _rate;
-    ros::NodeHandle _nh;
 
     // // Delcare a Twist message type. 
     geometry_msgs::Twist _footwork_cmd;
