@@ -6,13 +6,15 @@
  * Initializes the ROS publisher for the `/cmd_vel` topic, sets the default Twist message
  * to zero values (stopping the robot), and sets the publishing rate.
  */
-Footwork::Footwork() : _rate(10), _nh(){
+Footwork::Footwork() : _rate(10) {
 
     // // Log a message to indicate the constructor is being executed
     ROS_INFO("Initializing Footwork class...");
 
+    ros::NodeHandle nh;
+
     // // Advertise the `/cmd_vel` topic to allow publishing velocity commands.
-    _footwork_pub = _nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
+    _footwork_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
 
     // // Initialize the Twsit message with zero default values, so Fetch doesn't move its base
     _footwork_cmd.linear.x = 0.0;
@@ -45,12 +47,13 @@ void Footwork::linear_motion(bool forward, int num_publishes){
         // // Log a message indicating that we are waiting for the action server.
         ROS_INFO("Publishing Twist message...");
         _footwork_pub.publish(_footwork_cmd);
+        _rate.sleep();
     }
 
     // // Reset the Twist message to stop the robot
     _footwork_cmd.linear.x = 0.0;
     _footwork_cmd.angular.z = 0.0;
-    _footwork_pub.publish(_footwork_cmd);  // Send a stop command
+    // _footwork_pub.publish(_footwork_cmd);  // Send a stop command
 }
 
 
@@ -82,12 +85,13 @@ void Footwork::turn(bool clockwise, int num_publishes, bool wide){
         // // Log a message indicating that we are waiting for the action server.
         ROS_INFO("Publishing Twist message...");
         _footwork_pub.publish(_footwork_cmd);
+        _rate.sleep();
     }
 
     // // Reset the Twist message to stop the robot.
     _footwork_cmd.linear.x = 0.0;
     _footwork_cmd.angular.z = 0.0;  
-    _footwork_pub.publish(_footwork_cmd);  // Send a stop command  
+    // _footwork_pub.publish(_footwork_cmd);  // Send a stop command  
 }
 
 
