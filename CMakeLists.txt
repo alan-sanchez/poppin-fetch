@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   control_msgs
   geometry_msgs
   trajectory_msgs
+  
 )
 
 
@@ -145,6 +146,7 @@ add_executable(la_chona_dance
   src/la_chona_dance.cpp
   src/PointHeadClient.cpp
   src/Footwork.cpp
+  src/FollowTrajectoryClient.cpp
 )
 
 target_link_libraries(la_chona_dance
