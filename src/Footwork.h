@@ -18,37 +18,41 @@
  */
 class Footwork {
 public:
-    /**
-     * @brief Constructor for Footwork
-     * 
-     * [ADD HERE]
-     */
+    // // constructor for Footwork
     Footwork();
 
     /**
-     * @brief
+     * @brief Moves the robot linearly.
      * 
-     * [ADD HERE]
+     * Publishes Twist messages to move the robot forward or backward.
+     * 
+     * @param forward If true, moves the robot forward. If false, moves the robot backward.
+     * @param num_publishes Number of times the command is published. 
      */
     void linear_motion(bool forward, int num_publishes=1);
 
     /**
-     * @brief
+     * @brief Rotates the robot in place or performs a wide turn.
      * 
-     * [ADD HERE]
+     * Publishes Twist messages to rotate the robot clockwise or counterclockwise,
+     * with an optional wide turn (adding forward motion).
+     * 
+     * @param clockwise If true, turns the robot clockwise. If false, turns counterclockwise.
+     * @param num_publishes Number of times the command is published.
+     * @param wide If true, adds forward motion to the turn for a wider turning arc.
      */
     void turn(bool clockwise, int num_publishes=1, bool wide=false);
 
 private:
-    /**
-     * @brief
-     *
-     * [ADD HERE] 
-     */
+    // // ROs publisher to send Twsit messages to control the robot's base.
     ros::Publisher _footwork_pub;
-    geometry_msgs::Twist _footwork_cmd;
+    
+    // // Limits the frequency of publshing Twist messages
     ros::Rate _rate;
     ros::NodeHandle _nh;
+
+    // // Delcare a Twist message type. 
+    geometry_msgs::Twist _footwork_cmd;
 };
 
 #endif // FOOT_WORK_H
