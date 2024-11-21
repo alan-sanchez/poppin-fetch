@@ -30,6 +30,10 @@ public:
 
     /**
      * @brief Points the robot's head at a specified target in 3D space.
+     *
+     * This function sends a goal to the head controller action server to point the
+     * robot's head at the specified target. The motion will be executed over at least
+     * the specified duration.
      * 
      * @param x Target's x-coordinate (in the specified frame).
      * @param y Target's y-coordinate (in the specified frame).
@@ -37,9 +41,6 @@ public:
      * @param frame The reference frame for the target coordinates (e.g., "base_link").
      * @param duration The minimum duration (in seconds) to execute the motion.
      * 
-     * This function sends a goal to the head controller action server to point the
-     * robot's head at the specified target. The motion will be executed over at least
-     * the specified duration.
      */
     void lookAt(double x, double y, double z, const std::string& frame, double duration = 1.0);
 

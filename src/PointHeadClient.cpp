@@ -13,6 +13,9 @@ PointHeadClient::PointHeadClient() : client("head_controller/point_head", true) 
     
     // // Wait until the action server for the head controller is available.
     client.waitForServer();
+
+    // // Log a message notifying user that the action server has connected.
+    ROS_INFO("head_controller action server has connected");
 }
 
 /**
