@@ -30,14 +30,14 @@ public:
      * 
      * [ADD HERE]
      */
-    void turn(int iterations, double z, bool clockwise);
+    void linear_motion(bool forward, int num_publishes=1);
 
     /**
      * @brief
      * 
      * [ADD HERE]
      */
-    void move_base(int interations, bool forward);
+    void turn(bool clockwise, int num_publishes=1, bool wide=false);
 
 private:
     /**
@@ -46,8 +46,9 @@ private:
      * [ADD HERE] 
      */
     ros::Publisher _footwork_pub;
-    geometry_msgs::Twist _twist_cmd;
+    geometry_msgs::Twist _footwork_cmd;
     ros::Rate _rate;
+    ros::NodeHandle _nh;
 };
 
 #endif // FOOT_WORK_H
