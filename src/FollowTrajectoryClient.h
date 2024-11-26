@@ -8,6 +8,7 @@
 #include <trajectory_msgs/JointTrajectoryPoint.h>
 #include <string>
 #include <vector>
+#include "Footwork.h" // Include the Footwork header
 
 /**
  * @class FollowTrajectoryClient
@@ -16,7 +17,7 @@
  * This class communicates with the `/arm_with_torso_controller/follow_joint_trajectory` action server
  * to send joint trajectory goals and monitor feedback.
  */
-class FollowTrajectoryClient {
+class FollowTrajectoryClient: public Footwork {
 public:
     // // Constructor for FollowTrajectoryClient
     FollowTrajectoryClient();
