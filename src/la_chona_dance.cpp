@@ -37,7 +37,6 @@ int main(int argc, char** argv) {
     FollowTrajectoryClient trajectory_client;
 
     // Example: Move the robot arm to a predefined position
-    // std::vector<double> positions = {0.4, -0.5, 0.2, 0.0, 0.5, 0.0, -0.4, 0.0};
     if (trajectory_client.move_joints_to({0.4, -0.5, 0.2, 0.0, 0.5, 0.0, -0.4, 0.0}, 2.0, "Forward", "Move")) {
         ROS_INFO("Trajectory executed successfully!");
     } else {

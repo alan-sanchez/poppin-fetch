@@ -13,10 +13,4 @@ Videos can be found here: [Instagram Link](https://www.instagram.com/p/CJHvPiNnu
 ![Fetch Dance Bot in Action](media/dance_image.png)
 
 
-<!-- ## Features
-
-- **Expressive Motion**: Designed to make the robot's movements more engaging and lifelike.
-- **Dance Routines**: Programmed routines that demonstrate the robot’s dexterity and expressiveness.
-- **MoveIt! Integration**: Uses the powerful MoveIt! framework for precise and complex motion control. -->
-
 
