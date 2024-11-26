@@ -94,29 +94,28 @@ bool FollowTrajectoryClient::move_joints_to(const std::vector<double>& positions
                      actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction>::SimpleActiveCallback(),
                      boost::bind(&FollowTrajectoryClient::feedbackCallback, this, _1));
 
-    // Wait for the result
+    // // Wait for the result
     bool success = _client.waitForResult();
     if (!success) {
         ROS_ERROR("Failed to execute trajectory");
     }
-
     return success;
 }
-
 
 
 /**
  * @brief Callback function to handle feedback from the action server.
  *  
+ * This feedback also publishes the base of the robot to move while the robot is executing an action 
+ *
  * @param feedback The feedback message from the action server.
  */
 void FollowTrajectoryClient::feedbackCallback(const control_msgs::FollowJointTrajectoryFeedbackConstPtr& feedback) {
-    // Example handling of feedback
     if (_base_motion == "Forward") {
-        ROS_INFO("Base motion: Moving forward...");
-    } else if (_head_motion == "Move") {
-        ROS_INFO("Head motion: Performing specified head movement...");
-    } else {
-        ROS_INFO("Trajectory feedback received...");
-    }
+        this->linear_motion(true, 1); // 
+        // ROS_INFO("Base motion: Moving forward...");
+    } else if (_base_motion == "Backward") {
+        this->linear_motion(false, 1);
+        // ROS_INFO("Head motion: Performing specified head movement...");
+    } 
 }
