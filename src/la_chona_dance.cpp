@@ -18,7 +18,7 @@
  */
 int main(int argc, char** argv) {
     // Initialize the ROS node
-    ros::init(argc, argv, "fetch_move_node");
+    ros::init(argc, argv, "la_chona_dance");
 
     // // Create instances of `PointHeadClient`. This class provides functionality to interact 
     // // with the robot's head controllers through ROS action servers.
@@ -36,27 +36,44 @@ int main(int argc, char** argv) {
     // // robot's arm, allowing it to move to specified joint positions through a trajectory action.
     FollowTrajectoryClient trajectory_client;
 
-    // Example: Move the robot arm to a predefined position
-    if (trajectory_client.move_joints_to({0.4, -0.5, 0.2, 0.0, 0.5, 0.0, -0.4, 0.0}, 2.0, "Forward", "Move")) {
-        ROS_INFO("Trajectory executed successfully!");
-    } else {
-        ROS_ERROR("Trajectory execution failed!");
+    // // Example: Move the robot arm to a predefined position
+    // if (trajectory_client.move_joints_to({0.4, -0.5, 0.2, 0.0, 0.5, 0.0, -0.4, 0.0}, 2.0, "Forward", "Move")) {
+    //     ROS_INFO("Trajectory executed successfully!");
+    // } else {
+    //     ROS_ERROR("Trajectory execution failed!");
+    // }
+
+    // base_cmd.linear_motion(true, 10); // forward = true, num_publishes=10
+    // base_cmd.turn(true, 10, true); // 
+
+    // // // Command the robot's gripper to open and close. 
+    // gripper_client.gripper_action(true);
+    // gripper_client.gripper_action(false);
+
+    // // Point the robot's head to a target location (1.0, 0.0, 1.5) in the "base_link" frame
+    // // over a duration of 2 seconds.
+    // head_client.lookAt(1.0, 0.0, 0.5, "base_link", 2.0);
+    // head_client.lookAt(1.0, 0.0, 0.5, "gripper_link", 2.0);
+
+    // // Begin initial dance pose
+    head_client.lookAt(1.0, 0.0, 1.2, "base_link", 1); 
+    trajectory_client.move_joints_to({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 4); // duration = 4 sec
+    ros::Duration(3.0).sleep();
+
+
+    // // 8 basics moving forward and backward
+    for (int i=0; i<4; i++){
+        trajectory_client.move_joints_to({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); // duration=4, base_motion="Forward"
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); 
     }
 
-    base_cmd.linear_motion(true, 10); // forward = true, num_publishes=10
-    base_cmd.turn(true, 10, true); // 
+    for (int i=0; i<4; i++){
+        trajectory_client.move_joints_to({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); // duration=4, base_motion="Backward"
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); 
+    }
+    
+    
 
-    // // Command the robot's gripper to open and close. 
-    gripper_client.gripper_action(true);
-    gripper_client.gripper_action(false);
-
-    // Point the robot's head to a target location (1.0, 0.0, 1.5) in the "base_link" frame
-    // over a duration of 2 seconds.
-    head_client.lookAt(1.0, 0.0, 0.5, "base_link", 2.0);
-    head_client.lookAt(1.0, 0.0, 0.5, "gripper_link", 2.0);
-
-    // // Keep the node running
-    ros::spin();
 
     // Return 0 to indicate successful execution of the program.
     return 0;
