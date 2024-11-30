@@ -45,7 +45,7 @@ void Footwork::linear_motion(bool forward, int num_publishes){
     // // Publish the Twist message
     for (int j=0; j<num_publishes; j++){
         // // Log a message indicating that we are waiting for the action server.
-        ROS_INFO("Publishing Twist message...");
+        // ROS_INFO("Publishing Twist message...");
         _footwork_pub.publish(_footwork_cmd);
         _rate.sleep();
     }
@@ -83,7 +83,7 @@ void Footwork::turn(bool clockwise, int num_publishes, bool wide){
     // // Publish the Twist message multiple times to ensure the command is received.
     for (int i=0; i<num_publishes; i++){
         // // Log a message indicating that we are waiting for the action server.
-        ROS_INFO("Publishing Twist message...");
+        // ROS_INFO("Publishing Twist message...");
         _footwork_pub.publish(_footwork_cmd);
         _rate.sleep();
     }
