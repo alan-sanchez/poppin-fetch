@@ -61,18 +61,73 @@ int main(int argc, char** argv) {
     ros::Duration(3.0).sleep();
 
 
-    // // 8 basics moving forward and backward
+    // // 8 basics moving forward and backward, while also moving the torso up and down
     for (int i=0; i<4; i++){
-        trajectory_client.move_joints_to({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); // duration=4, base_motion="Forward"
-        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); 
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); // duration=0.3, base_motion="Forward"
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); 
     }
 
     for (int i=0; i<4; i++){
-        trajectory_client.move_joints_to({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); // duration=4, base_motion="Backward"
-        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); 
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); // duration=0.3, base_motion="Backward"
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); 
     }
     
-    
+    // // 
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn"); // duration=0.3, base_motion="Right Turn"
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Left Turn"); // duration=0.3, base_motion="Right Turn"
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Left Turn");
+    }
+
+    // // 
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn"); 
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
+    }
+
+    // // 
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); 
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward");
+    }
+
+    // // 
+    for (int i=0; i<3; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Left Turn"); 
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Left Turn");
+    }
+
+    // // 
+    for (int i=0; i<3; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); 
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward");
+    }
+
+    // // 
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn"); 
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
+    }
+
+    // // 
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); 
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward");
+    }
+
+    // // 
+    ros::Duration(0.4).sleep();
+
+
+    // // 
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3); 
+        trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3);
+    }
+
+    // // 
+    trajectory_client.move_joints_to({0.3, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 4, "Wide Left Turn"); //
 
 
     // Return 0 to indicate successful execution of the program.
