@@ -70,14 +70,14 @@ void Footwork::linear_motion(bool forward, int num_publishes){
 void Footwork::turn(bool clockwise, int num_publishes, bool wide){
     // // Add forward motion for a wide turn if `wide` is true.
     if (wide == true){
-        _footwork_cmd.linear.x = 0.6;
+        _footwork_cmd.linear.x = 0.4;
     }
 
     // // Set the angular z velocity based on the `clockwise` parameter.
     if (clockwise == true){
-        _footwork_cmd.angular.z = 0.9;
+        _footwork_cmd.angular.z = -0.7; // Cause the robot to turn right. 
     } else{
-        _footwork_cmd.angular.z = -1.0;
+        _footwork_cmd.angular.z = 1.0; // In simulation it turns slower in this direction (left turn).
     }
 
     // // Publish the Twist message multiple times to ensure the command is received.
