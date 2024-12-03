@@ -20,7 +20,7 @@ GripperClient::GripperClient() : _client("gripper_controller/gripper_action") {
  * @brief 
  *
  */
- void GripperClient::gripper_action(bool close_gripper){
+ void GripperClient::close_gripper(bool close_gripper){
     // //
     control_msgs::GripperCommandGoal goal;
 

@@ -26,7 +26,7 @@ public:
      * @brief  
      *
      */
-    void gripper_action(bool close_gripper=false);
+    void close_gripper(bool close_gripper=false);
 
 private:
     /**
