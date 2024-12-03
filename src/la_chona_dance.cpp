@@ -36,25 +36,6 @@ int main(int argc, char** argv) {
     // // robot's arm, allowing it to move to specified joint positions through a trajectory action.
     FollowTrajectoryClient trajectory_client;
 
-    // // Example: Move the robot arm to a predefined position
-    // if (trajectory_client.move_joints_to({0.4, -0.5, 0.2, 0.0, 0.5, 0.0, -0.4, 0.0}, 2.0, "Forward", "Move")) {
-    //     ROS_INFO("Trajectory executed successfully!");
-    // } else {
-    //     ROS_ERROR("Trajectory execution failed!");
-    // }
-
-    // base_cmd.linear_motion(true, 10); // forward = true, num_publishes=10
-    // base_cmd.turn(true, 10, true); // 
-
-    // // // Command the robot's gripper to open and close. 
-    // gripper_client.gripper_action(true);
-    // gripper_client.gripper_action(false);
-
-    // // Point the robot's head to a target location (1.0, 0.0, 1.5) in the "base_link" frame
-    // // over a duration of 2 seconds.
-    // head_client.lookAt(1.0, 0.0, 0.5, "base_link", 2.0);
-    // head_client.lookAt(1.0, 0.0, 0.5, "gripper_link", 2.0);
-
     // // Begin initial dance pose
     head_client.lookAt(1.0, 0.0, 1.2, "base_link", 1); 
     trajectory_client.move_joints_to({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 4); // duration = 4 sec
@@ -72,7 +53,7 @@ int main(int argc, char** argv) {
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); 
     }
     
-    // // 
+    // // Small cumbia back steps
     for (int i=0; i<2; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn"); // duration=0.3, base_motion="Right Turn"
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
@@ -80,55 +61,72 @@ int main(int argc, char** argv) {
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Left Turn");
     }
 
-    // // 
+    // // Turn to the right and face the camera in a 45 degree angle, them move forward
     for (int i=0; i<2; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn"); 
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
     }
 
-    // // 
     for (int i=0; i<2; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); 
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward");
     }
 
-    // // 
-    for (int i=0; i<3; i++){
+    // // Turn to the left and face the camera in a 45 degree angle, then move forward
+    for (int i=0; i<2; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Left Turn"); 
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Left Turn");
     }
 
-    // // 
-    for (int i=0; i<3; i++){
+    for (int i=0; i<4; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward"); 
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Forward");
     }
 
-    // // 
+    // // Right turn to face the camera, then move backward.
     for (int i=0; i<2; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn"); 
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
     }
 
-    // // 
     for (int i=0; i<2; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward"); 
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward");
     }
 
-    // // 
-    ros::Duration(0.4).sleep();
+    // // Pause before the drop
+    ros::Duration(1).sleep();
 
-
-    // // 
+    // // Move torso with tempo
     for (int i=0; i<2; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3); 
         trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3);
+    }    
+    ros::Duration(1).sleep();
+
+    // // Complete a wide right turn while moving the arm configuration
+    trajectory_client.move_joints_to({0.30, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 4, "Wide Right Turn"); //
+    ros::Duration(1).sleep();
+
+    // // Left turn to face the camera the move backward
+    for (int i=0; i<4; i++){
+        trajectory_client.move_joints_to({0.28, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.3, "Left Turn"); 
+        trajectory_client.move_joints_to({0.30, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.3, "Left Turn");
     }
 
-    // // 
-    trajectory_client.move_joints_to({0.3, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 4, "Wide Left Turn"); //
+    for (int i=0; i<4; i++){
+        trajectory_client.move_joints_to({0.28, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.4, "Backward"); 
+        trajectory_client.move_joints_to({0.30, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.4, "Backward");
+    }
 
+    // // Move the arm to grasp the sombrero then pull it off Fetch's head. 
+    trajectory_client.move_joints_to({0.3, -1.33, 0.04, 2.64, 1.94, 0.0, 1.03, 0.69}, 1);
+    gripper_client.close_gripper(true);
+    trajectory_client.move_joints_to({0.3, -1.31, -0.29, 2.64, 1.33, 0.0, 0.59, 0.69}, 1);
+
+    // // Open gripper to restart dance routine
+    ros::Duration(5).sleep();
+    gripper_client.close_gripper(false);
 
     // Return 0 to indicate successful execution of the program.
     return 0;
