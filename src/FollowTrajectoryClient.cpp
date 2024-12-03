@@ -112,10 +112,21 @@ bool FollowTrajectoryClient::move_joints_to(const std::vector<double>& positions
  */
 void FollowTrajectoryClient::feedbackCallback(const control_msgs::FollowJointTrajectoryFeedbackConstPtr& feedback) {
     if (_base_motion == "Forward") {
-        this->linear_motion(true, 1); // 
-        // ROS_INFO("Base motion: Moving forward...");
+        this->linear_motion(true); //
+
     } else if (_base_motion == "Backward") {
-        this->linear_motion(false, 1);
-        // ROS_INFO("Head motion: Performing specified head movement...");
-    } 
+        this->linear_motion(false);
+
+    } else if (_base_motion == "Right Turn") {
+        this->turn(true);
+
+    } else if (_base_motion == "Left Turn") {
+        this->turn(false);
+
+    } else if (_base_motion == "Wide Right Turn") {
+        this->turn(true, 1, true);
+
+    } else if (_base_motion == "Wide Left Turn") {
+        this->turn(false, 1, true);
+    }
 }
