@@ -5,11 +5,7 @@
 #include "GripperClient.h"
 
 /**
- * @brief Entry point of the `fetch_move_node` program.
- * 
- * This program demonstrates the use of the `PointHeadClient` class to control Fetch's
- * head. It initializes the ROS node, instantiates the clients, 
- * and sends example commands to the robot.
+ * @brief Entry point of the `la_chona_dance` program.
  * 
  * @param argc Number of command-line arguments passed to the program.
  * @param argv Array of command-line arguments.
