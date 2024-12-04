@@ -153,3 +153,17 @@ add_executable(la_chona_dance
 target_link_libraries(la_chona_dance
   ${catkin_LIBRARIES}
 )
+
+
+## Executable for bhangra dance
+add_executable(bhangra_dance
+  src/bhangra_dance.cpp
+  src/PointHeadClient.cpp
+  src/Footwork.cpp
+  src/FollowTrajectoryClient.cpp
+  src/GripperClient.cpp
+)
+
+target_link_libraries(bhangra_dance
+  ${catkin_LIBRARIES}
+)
