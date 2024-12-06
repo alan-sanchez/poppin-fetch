@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "Footwork.h" // Include the Footwork header
+#include "PointHeadClient.h" // Include the Head client header
 
 /**
  * @class FollowTrajectoryClient
@@ -17,7 +18,7 @@
  * This class communicates with the `/arm_with_torso_controller/follow_joint_trajectory` action server
  * to send joint trajectory goals and monitor feedback.
  */
-class FollowTrajectoryClient: public Footwork {
+class FollowTrajectoryClient: public Footwork, public PointHeadClient {
 public:
     // // Constructor for FollowTrajectoryClient
     FollowTrajectoryClient();
