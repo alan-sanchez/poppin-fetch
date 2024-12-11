@@ -75,7 +75,7 @@ void Footwork::turn(bool clockwise, int num_publishes, bool wide){
 
     // // Set the angular z velocity based on the `clockwise` parameter.
     if (clockwise == true){
-        _footwork_cmd.angular.z = -0.9; // Causes the robot to turn right. 
+        _footwork_cmd.angular.z = -0.9; // Causes the robot to turn in the right direction. 
     } else{
         _footwork_cmd.angular.z = 1.0; // In simulation it turns slower in this direction (left turn).
     }
