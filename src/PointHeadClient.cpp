@@ -25,9 +25,7 @@ PointHeadClient::PointHeadClient() : client("head_controller/point_head", true) 
  * The goal specifies the 3D target coordinates, the reference frame for those coordinates,
  * and the minimum duration over which the motion should occur.
  * 
- * @param x Target's x-coordinate in the specified frame.
- * @param y Target's y-coordinate in the specified frame.
- * @param z Target's z-coordinate in the specified frame.
+ * @param coordinates A vector of desired coordinates for the robot to look at.
  * @param frame The reference frame for the target coordinates (e.g., "base_link").
  * @param duration The minimum duration (in seconds) to execute the motion.
  */

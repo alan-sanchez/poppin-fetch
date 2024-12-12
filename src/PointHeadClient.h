@@ -35,9 +35,7 @@ public:
      * robot's head at the specified target. The motion will be executed over at least
      * the specified duration.
      * 
-     * @param x Target's x-coordinate (in the specified frame).
-     * @param y Target's y-coordinate (in the specified frame).
-     * @param z Target's z-coordinate (in the specified frame).
+     * @param coordinates A vector of desired coordinates for the robot to look at.
      * @param frame The reference frame for the target coordinates (e.g., "base_link").
      * @param duration The minimum duration (in seconds) to execute the motion.
      * 
