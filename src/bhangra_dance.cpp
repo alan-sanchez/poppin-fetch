@@ -7,10 +7,6 @@
 /**
  * @brief Entry point of the `fetch_move_node` program.
  * 
- * This program demonstrates the use of the `PointHeadClient` class to control Fetch's
- * head. It initializes the ROS node, instantiates the clients, 
- * and sends example commands to the robot.
- * 
  * @param argc Number of command-line arguments passed to the program.
  * @param argv Array of command-line arguments.
  *
@@ -37,14 +33,14 @@ int main(int argc, char** argv) {
     FollowTrajectoryClient trajectory_client;
 
     // // Begin initial dance pose
-    head_client.lookAt(1.0, 0.0, 1.2, "base_link", 1); 
+    head_client.lookAt({1.0, 0.0, 1.2}); 
     trajectory_client.move_joints_to({0.3, -1.03, 1.07, -2.79, -1.65, 0.04, -1.26, -0.62}, 4); // duration = 4 sec
     ros::Duration(3.0).sleep();
 
     // // Get Fetch to look at camera and move arm to first dance pose
-    head_client.lookAt(0.0, -1.0, 1.2, "base_link",.5);
+    head_client.lookAt({0.0, -1.0, 1.2},0.5);
     trajectory_client.move_joints_to({0.3, -0.78, 0.37, -1.38, -1.65, 1.19, -1.27, -0.62}, 2); //, "Right Turn");
-    head_client.lookAt(1.0, 0.0, 1.2, "base_link",.3);
+    head_client.lookAt({1.0, 0.0, 1.2},0.3);
     ros::Duration(.1).sleep();
 
     // // 
@@ -55,9 +51,12 @@ int main(int argc, char** argv) {
         trajectory_client.move_joints_to({0.3, -0.68, 0.37, -1.38, -1.65, 1.19, -1.27, -0.62},1.8, "Left Turn");
     }
 
-    
-    // Return 0 to indicate successful execution of the program.
-    //[0.21, -1.37, 1.17, -0.23, -1.94, 2.96, -1.57, 0.14]
-    // [0.3, -1.35, -0.25, -0.23, -1.74, 2.96, -1.5, 0.14]
+    //
+    for (int i=0; i<4; i++){
+        trajectory_client.move_joints_to({0.21, -1.37, 1.17, -0.23, -1.94, 2.96, -1.57, 0.14},2, "Stop Base",{0.3,-0.8, .2});
+        trajectory_client.move_joints_to({0.3, -1.35, -0.25, -0.23, -1.74, 2.96, -1.50, 0.14},2, "Stop Base",{0.3, 0.8, .2});
+    }
+    // // Return 0 to indicate successful execution of the program.
     return 0;
+    
 }
