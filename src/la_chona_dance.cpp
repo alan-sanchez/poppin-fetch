@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     // Initialize the ROS node
     ros::init(argc, argv, "la_chona_dance");
 
-    // // Create instances of `PointHeadClient`. This class provides functionality to interact 
+    // // // Create instances of `PointHeadClient`. This class provides functionality to interact 
     // // with the robot's head controllers through ROS action servers.
     PointHeadClient head_client;
 
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     FollowTrajectoryClient trajectory_client;
 
     // // Begin initial dance pose
-    head_client.lookAt(1.0, 0.0, 1.2, "base_link", 1); 
+    head_client.lookAt({1.0, 0.0, 1.2}); 
     trajectory_client.move_joints_to({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 4); // duration = 4 sec
     ros::Duration(3.0).sleep();
 
