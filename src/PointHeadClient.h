@@ -42,7 +42,7 @@ public:
      * @param duration The minimum duration (in seconds) to execute the motion.
      * 
      */
-    void lookAt(double x, double y, double z, const std::string& frame, double duration = 1.0);
+    void lookAt(const std::vector<double>& coordinates, double duration = 1.0, const std::string& frame="base_link");
 
 private:
     /**

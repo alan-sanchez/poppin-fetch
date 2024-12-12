@@ -31,7 +31,7 @@ PointHeadClient::PointHeadClient() : client("head_controller/point_head", true) 
  * @param frame The reference frame for the target coordinates (e.g., "base_link").
  * @param duration The minimum duration (in seconds) to execute the motion.
  */
-void PointHeadClient::lookAt(double x, double y, double z, const std::string& frame, double duration) {
+void PointHeadClient::lookAt(const std::vector<double>& coordinates, double duration, const std::string& frame) {
     // // Create a PointHeadGoal message to specify the target.
     control_msgs::PointHeadGoal goal;
 
@@ -42,9 +42,9 @@ void PointHeadClient::lookAt(double x, double y, double z, const std::string& fr
     goal.target.header.frame_id = frame;
 
     // // Set the target's 3D coordinates.
-    goal.target.point.x = x;
-    goal.target.point.y = y;
-    goal.target.point.z = z;
+    goal.target.point.x = coordinates[0];
+    goal.target.point.y = coordinates[1];
+    goal.target.point.z = coordinates[2];
 
     // // Set the minimum duration for the head motion.
     goal.min_duration = ros::Duration(duration);
