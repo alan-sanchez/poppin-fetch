@@ -36,10 +36,13 @@ FollowTrajectoryClient::FollowTrajectoryClient() : _client("/arm_with_torso_cont
  *
  * @return True if the goal is successfully sent and completed, otherwise false.
  */
-bool FollowTrajectoryClient::move_joints_to(const std::vector<double>& positions, double duration, const std::string& base_motion, const std::string& head_motion) {
+bool FollowTrajectoryClient::move_joints_to(const std::vector<double>& positions, 
+                                            double duration, 
+                                            const std::string& base_motion, 
+                                            const std::vector<double>& coordinates) {
     // //
     _base_motion = base_motion;
-    _head_motion = head_motion;
+    _coordinates = coordinates;
 
     // // Validate positions length with conditional statement
     // // Note:`.size()` returns an unsigned int of the number of elements in the stored container.
@@ -111,6 +114,7 @@ bool FollowTrajectoryClient::move_joints_to(const std::vector<double>& positions
  * @param feedback The feedback message from the action server.
  */
 void FollowTrajectoryClient::feedbackCallback(const control_msgs::FollowJointTrajectoryFeedbackConstPtr& feedback) {
+    // // Footwork command conditional statements    
     if (_base_motion == "Forward") {
         this->linear_motion(true); //
 
@@ -129,4 +133,9 @@ void FollowTrajectoryClient::feedbackCallback(const control_msgs::FollowJointTra
     } else if (_base_motion == "Wide Left Turn") {
         this->turn(false, 1, true);
     }
+
+    if (_coordinates.size() > 0) {
+        this->lookAt(_coordinates);
+    }
+
 }

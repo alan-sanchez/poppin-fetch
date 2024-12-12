@@ -37,7 +37,10 @@ public:
      *
      * @return True if the goal is successfully sent and completed, otherwise false.
      */
-    bool move_joints_to(const std::vector<double>& positions, double duration = 1.0, const std::string& base_motion="", const std::string& head_motion="");
+    bool move_joints_to(const std::vector<double>& positions, 
+                        double duration = 1.0, 
+                        const std::string& base_motion="", 
+                        const std::vector<double>& coordinates={});
 
 private:
     /**
@@ -53,9 +56,12 @@ private:
     // // Names of the joints controlled by the client
     std::vector<std::string> _joint_names;
 
-    // // Parameters for optional base and head motion
+    // // Coordiantes where the head will look at
+    std::vector<double> _coordinates;
+
+    // // Parameters for optional base motion
     std::string _base_motion;
-    std::string _head_motion;
+    
 };
 
 #endif // FOLLOW_TRAJECTORY_CLIENT_H
