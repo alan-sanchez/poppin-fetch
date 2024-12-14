@@ -53,8 +53,8 @@ int main(int argc, char** argv) {
 
     //
     for (int i=0; i<4; i++){
-        trajectory_client.move_joints_to({0.21, -1.37, 1.17, -0.23, -1.94, 2.96, -1.57, 0.14},2, "Stop Base",{0.3,-0.8, .2});
-        trajectory_client.move_joints_to({0.3, -1.35, -0.25, -0.23, -1.74, 2.96, -1.50, 0.14},2, "Stop Base",{0.3, 0.8, .2});
+        trajectory_client.move_joints_to({0.21, -1.37, 1.17, -0.23, -1.94, 2.96, -1.57, 0.14},2);//, "Stop Base",{0.3,-0.6, .2});
+        trajectory_client.move_joints_to({0.3, -1.35, -0.25, -0.23, -1.74, 2.96, -1.50, 0.14},2);//, "Stop Base",{0.3, 0.6, .2});
     }
     // // Return 0 to indicate successful execution of the program.
     return 0;
