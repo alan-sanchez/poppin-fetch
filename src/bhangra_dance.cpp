@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     head_client.lookAt({1.0, 0.0, 1.2},0.3);
     ros::Duration(.1).sleep();
 
-    // // 
+    // // Beginning turn for dance
     for (int i=0; i<3; i++){
         base_cmd.turn(true,30,false);
         trajectory_client.move_joints_to({0.3, -1.46, 0.37, -0.65, -1.65, 1.19, -0.76, -0.19},2.4, "Right Turn");
@@ -51,11 +51,24 @@ int main(int argc, char** argv) {
         trajectory_client.move_joints_to({0.3, -0.68, 0.37, -1.38, -1.65, 1.19, -1.27, -0.62},1.8, "Left Turn");
     }
 
-    //
-    for (int i=0; i<4; i++){
-        trajectory_client.move_joints_to({0.21, -1.37, 1.17, -0.23, -1.94, 2.96, -1.57, 0.14},2);//, "Stop Base",{0.3,-0.6, .2});
-        trajectory_client.move_joints_to({0.3, -1.35, -0.25, -0.23, -1.74, 2.96, -1.50, 0.14},2);//, "Stop Base",{0.3, 0.6, .2});
+    // // Arm motion only
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.21, -1.37, 1.17, -0.23, -1.94, 2.96, -1.57, 0.14},2);
+        trajectory_client.move_joints_to({0.3, -1.35, -0.25, -0.23, -1.74, 2.96, -1.50, 0.14},2);
     }
+
+    // // Move torso and arm for next dance moves
+    trajectory_client.move_joints_to({0.03, 1.12, 0.14, -1.55, 0.67, -0.03, 0.46, 0},3.5);
+
+    // // Hoping dance move
+    for (int i=0; i<2; i++){
+        trajectory_client.move_joints_to({0.08, 1.24, 0.14, -1.47, 0.52, -0.03, 0.46, 0},0.5);
+        trajectory_client.move_joints_to({0.03, 1.12, 0.14, -1.55, 0.67, -0.03, 0.46, 0},0.5);
+    }
+
+    // // Finishing pose
+    trajectory_client.move_joints_to({0.15, 0.79, 1.01, 1.16, -2.08, 2.56, 0.95, -0.95},2.5);
+
     // // Return 0 to indicate successful execution of the program.
     return 0;
     
