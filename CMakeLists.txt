@@ -167,3 +167,16 @@ add_executable(bhangra_dance
 target_link_libraries(bhangra_dance
   ${catkin_LIBRARIES}
 )
+
+## Executable for is it true dance
+add_executable(is_it_true_dance
+  src/is_it_true_dance.cpp
+  src/PointHeadClient.cpp
+  src/Footwork.cpp
+  src/FollowTrajectoryClient.cpp
+  src/GripperClient.cpp
+)
+
+target_link_libraries(is_it_true_dance
+  ${catkin_LIBRARIES}
+)
