@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
     FollowTrajectoryClient trajectory_client;
 
     // // Begin initial dance pose
-    head_client({1.0, -0.5, 1.2},1.2);
+    head_client.lookAt({1.0, -0.5, 1.2},1.2);
     trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 2);
     ros::Duration(1.0).sleep();
 
@@ -47,15 +47,15 @@ int main(int argc, char** argv) {
     head_client.lookAt({0.2, -1.0, 1.2, 0.3});
     head_client.lookAt({1.0, 0.0, 1.2, 0.5}); // TODO: include backward motion
     base_cmd.turn(true, 14);
-    ros::Duration(0.2).sleep()
+    ros::Duration(0.2).sleep();
 
     // //
     //    trajectory_client.move_joints_to
 
 
     // //
-    base_cmd.turn()
+    // base_cmd.turn()
 
     // // 
-    return 0
+    return 0;
 }
