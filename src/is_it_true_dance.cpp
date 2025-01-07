@@ -13,7 +13,7 @@
  * @return int Returns 0 upon successful execution.
  */
 int main(int argc, char** argv) {
-    // Initialize the ROS node
+    // // Initialize the ROS node
     ros::init(argc, argv, "is_it_true_dance");
 
     // // Create instances of `PointHeadClient`. This class provides functionality to interact 
@@ -47,13 +47,14 @@ int main(int argc, char** argv) {
     head_client.lookAt({0.2, -1.0, 1.2, 0.3});
     head_client.lookAt({1.0, 0.0, 1.2, 0.5}); // TODO: include backward motion
     
-    // // 
+    // // Begin turn to face opposite direction
     base_cmd.turn(true, 14);
     ros::Duration(0.2).sleep();
+
+    // // Backward motion
     trajectory_client.move_joints_to({.3, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
     base_cmd.linear_motion(false, 5);
     ros::Duration(0.7).sleep();
-
     trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
     base_cmd.linear_motion(false,2);
     

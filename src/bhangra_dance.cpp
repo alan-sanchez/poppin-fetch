@@ -13,7 +13,7 @@
  * @return int Returns 0 upon successful execution.
  */
 int main(int argc, char** argv) {
-    // Initialize the ROS node
+    // // Initialize the ROS node
     ros::init(argc, argv, "bhangra_dance");
 
     // // Create instances of `PointHeadClient`. This class provides functionality to interact 
