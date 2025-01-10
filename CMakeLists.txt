@@ -136,7 +136,6 @@ include_directories(
 add_executable(joint_state_printer
   src/joint_state_printer.cpp
 )
-
 target_link_libraries(joint_state_printer
   ${catkin_LIBRARIES}
 )
@@ -149,7 +148,6 @@ add_executable(la_chona_dance
   src/FollowTrajectoryClient.cpp
   src/GripperClient.cpp
 )
-
 target_link_libraries(la_chona_dance
   ${catkin_LIBRARIES}
 )
@@ -163,7 +161,6 @@ add_executable(bhangra_dance
   src/FollowTrajectoryClient.cpp
   src/GripperClient.cpp
 )
-
 target_link_libraries(bhangra_dance
   ${catkin_LIBRARIES}
 )
@@ -176,7 +173,18 @@ add_executable(is_it_true_dance
   src/FollowTrajectoryClient.cpp
   src/GripperClient.cpp
 )
-
 target_link_libraries(is_it_true_dance
+  ${catkin_LIBRARIES}
+)
+
+## Executable for ante up dance
+add_executable(ante_up_dance
+  src/ante_up_dance.cpp
+  src/PointHeadClient.cpp
+  src/Footwork.cpp
+  src/FollowTrajectoryClient.cpp
+  src/GripperClient.cpp
+)
+target_link_libraries(ante_up_dance
   ${catkin_LIBRARIES}
 )
