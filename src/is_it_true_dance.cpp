@@ -38,15 +38,15 @@ int main(int argc, char** argv) {
     ros::Duration(1.0).sleep();
 
     // // Start dancing
-    head_client.lookAt({1.0, -0.5, 1.2}, 0.3)
+    head_client.lookAt({1.0, -0.85, 1.2}, 0.5);
+    trajectory_client.move_joints_to({.32, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 1); //,"None", {1.0, -0.85, 1.2});
 
     // // Start mobile base and head motions
-    base_cmd.linear_motion(false, 2);
-    head_client.lookAt({0.2, -1.0, 1.2, 0.3});
-    head_client.lookAt({1.0, 0.0, 1.2, 0.5}); // TODO: include backward motion
-    
-    // // Begin turn to face opposite direction
-    base_cmd.turn(true, 14);
+    head_client.lookAt({1.0, 0.0, 1.2, 0.5});
+    trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 1.5,"Forward");
+
+    // // Begin turn to face opposite direction 
+    base_cmd.turn(true, 48); // Might need to change the velocity on the footwork class
     ros::Duration(0.2).sleep();
 
     // // // Backward motion
@@ -56,26 +56,26 @@ int main(int argc, char** argv) {
     // trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
     // base_cmd.linear_motion(false,2);
     
-    // // // Forward base motion with torso height change
-    // trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // ros::Duration(0.4).sleep();
-    // base_cmd.linear_motion(true,5);
-    // ros::Duration(0.4).sleep();
-    // trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // base_cmd.linear_motion(true,5);
-    // ros::Duration(0.4).sleep();
-    // trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // trajectory_client.move_joints_to({.34, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // ros::Duration(0.4).sleep();
+    // // Forward base motion with torso height change
+    trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 1.0, "Forward");
+    ros::Duration(0.4).sleep();
+    base_cmd.linear_motion(true,5);
+    ros::Duration(0.4).sleep();
+    trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5, "Forward");
+    base_cmd.linear_motion(true,5);
+    ros::Duration(0.4).sleep();
+    trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5, "Forward");
+    trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5, "Forward");
+    trajectory_client.move_joints_to({.34, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5, "Forward");
+    trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5, "Forward");
+    ros::Duration(0.4).sleep();
 
-    // // // Backward motion/moonwalk
-    // base_cmd.linear_motion(false,5);
-    // trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // base_cmd.linear_motion(false,5);
-    // trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // base_cmd.linear_motion(false,10);
+    // // Backward motion/moonwalk
+    base_cmd.linear_motion(false,5);
+    trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
+    base_cmd.linear_motion(false,5);
+    trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
+    base_cmd.linear_motion(false,10);
 
     return 0;
 }
