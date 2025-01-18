@@ -48,13 +48,6 @@ int main(int argc, char** argv) {
     // // Begin turn to face opposite direction 
     base_cmd.turn(true, 48); // Might need to change the velocity on the footwork class
     ros::Duration(0.2).sleep();
-
-    // // // Backward motion
-    // trajectory_client.move_joints_to({.3, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // base_cmd.linear_motion(false, 5);
-    // ros::Duration(0.7).sleep();
-    // trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
-    // base_cmd.linear_motion(false,2);
     
     // // Forward base motion with torso height change
     trajectory_client.move_joints_to({.38, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 1.0, "Forward");
