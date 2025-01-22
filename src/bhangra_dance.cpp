@@ -2,7 +2,6 @@
 #include "PointHeadClient.h"
 #include "Footwork.h"
 #include "FollowTrajectoryClient.h"
-#include "GripperClient.h"
 
 /**
  * @brief Entry point of the `fetch_move_node` program.
@@ -19,10 +18,6 @@ int main(int argc, char** argv) {
     // // Create instances of `PointHeadClient`. This class provides functionality to interact 
     // // with the robot's head controllers through ROS action servers.
     PointHeadClient head_client;
-
-    // // Create an instance of `GripperClient`. This class allows control over the robot's gripper,
-    // // enabling commands to open and close the gripper for object manipulation.
-    GripperClient gripper_client;
 
     // // Create an instance of `Footwork`. This class provides functionality for base movements, 
     // // such as linear motion and turning. It sends velocity commands to the robot's base.
