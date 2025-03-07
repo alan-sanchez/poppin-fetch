@@ -153,6 +153,15 @@ target_link_libraries(la_chona_dance
 )
 
 
+## Executable for joint state printer
+add_executable(relax_arm_control
+  src/Tools/relax_arm_control.cpp
+)
+target_link_libraries(relax_arm_control
+  ${catkin_LIBRARIES}
+)
+
+
 ## Executable for bhangra dance
 add_executable(bhangra_dance
   src/bhangra_dance.cpp
