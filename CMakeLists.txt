@@ -134,7 +134,7 @@ include_directories(
 
 ## Executable for joint state printer
 add_executable(joint_state_printer
-  src/joint_state_printer.cpp
+  src/Tools/joint_state_printer.cpp
 )
 target_link_libraries(joint_state_printer
   ${catkin_LIBRARIES}
