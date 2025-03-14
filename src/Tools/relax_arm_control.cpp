@@ -20,6 +20,19 @@
 
 int main(int argc, char** argv)
 {
-  
+  // // Initialize the ROS node
+  ros::init(argc, argv, "relax_arm_control");
+
+  // // Creating a Nodehandle object to interact with the ROS system
+  // // This provides acces to ROS functionalites (subscribe, publish, interact w/ services and params)
+  ros::NodeHandle nh;
+
+  // // Use ROS log info to notify user they can move the arm
+  ROS_INFO("Relaxed arm node activated. You can now move the manipulator.");
+  ROS_INFO("Type Ctrl + C when you are done.");
+
+  // // Give control to ROS to process incoming messages
+  ros::spin();
+
   return 0;
 }
