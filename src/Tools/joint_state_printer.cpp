@@ -26,7 +26,7 @@
 *   msg (JointState): The JoinState message type
 */
 void callback(const sensor_msgs::JointState::ConstPtr& msg) {
-    // // We use -> to access the pointed-to object (ConstPtr&) members of the object. 
+    // // We use `->` to access the pointed-to object (ConstPtr&) members of the object. 
     // // In this instance, the code is acessing the name and position members
     std::vector<std::string> names = msg->name;
     std::vector<double> positions = msg->position;
