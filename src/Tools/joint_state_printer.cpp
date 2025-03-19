@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     // // agruments follow this order: "topic_name", Queue_size, callback_function
     ros::Subscriber subscriber = nh.subscribe("joint_states", 1000, callback);
 
-    // Give control to ROS to process incoming messages
+    // // Give control to ROS to process incoming messages
     ros::spin();
 
     return 0;
