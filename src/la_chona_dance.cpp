@@ -127,6 +127,6 @@ int main(int argc, char** argv) {
     // ros::Duration(5).sleep();
     // gripper_client.close_gripper(false);
 
-    // Return 0 to indicate successful execution of the program.
+    // // Return 0 to indicate successful execution of the program.
     return 0;
 }
