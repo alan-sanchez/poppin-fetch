@@ -318,6 +318,7 @@ if __name__ == "__main__":
     arm_action.fast_move_to([0.3, -1.33, 0.04, 2.64, 1.94, 0.0, 1.03, 0.69], duration = 1)
     arm_action.close_gripper()
     arm_action.fast_move_to([0.3, -1.31, -0.29, 2.64, 1.33, 0.0, 0.59, 0.69], duration = 1)
-
+    
+    ## Sleep momentarily then open gripper to release sombrero
     rospy.sleep(5)
     arm_action.open_gripper()

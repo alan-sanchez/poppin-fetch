@@ -61,7 +61,7 @@ void callback(const sensor_msgs::JointState::ConstPtr& msg) {
 
             // // positions[index] gives us the position of the current joint from index.
             // // std::round rounds the position to two decimals places.
-            // // .push_back() adds an element to the nend of the container
+            // // push_back() adds an element to the end of the container
             joint_positions.push_back(std::round(positions[index] * 100) / 100.0);
         }
     }
@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     // // agruments follow this order: "topic_name", Queue_size, callback_function
     ros::Subscriber subscriber = nh.subscribe("joint_states", 1000, callback);
 
-    // Give control to ROS to process incoming messages
+    // // Give control to ROS to process incoming messages
     ros::spin();
 
     return 0;

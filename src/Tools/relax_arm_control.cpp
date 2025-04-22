@@ -15,7 +15,7 @@
 // // STL container for managing dynamic arrays.
 #include <vector> 
 
-// // Sstandard library for string manipulation and storage
+// // Standard library for string manipulation and storage
 #include <string> // Standard library for string manipulation and storage.
 
 int main(int argc, char** argv)
@@ -23,7 +23,7 @@ int main(int argc, char** argv)
   // // Initialize the ROS node
   ros::init(argc, argv, "relax_arm_control");
 
-  // // Creating a Nodehandle object to interact with the ROS system
+  // // Creating a `Nodehandle` object to interact with the ROS system
   // // This provides acces to ROS functionalites (subscribe, publish, interact w/ services and params)
   ros::NodeHandle nh;
 
