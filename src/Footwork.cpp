@@ -53,7 +53,6 @@ void Footwork::linear_motion(bool forward, int num_publishes){
     // // Reset the Twist message to stop the robot
     _footwork_cmd.linear.x = 0.0;
     _footwork_cmd.angular.z = 0.0;
-    // _footwork_pub.publish(_footwork_cmd);  // Send a stop command
 }
 
 
@@ -91,7 +90,6 @@ void Footwork::turn(bool clockwise, int num_publishes, bool wide){
     // // Reset the Twist message to stop the robot.
     _footwork_cmd.linear.x = 0.0;
     _footwork_cmd.angular.z = 0.0;  
-    // _footwork_pub.publish(_footwork_cmd);  // Send a stop command  
 }
 
 
