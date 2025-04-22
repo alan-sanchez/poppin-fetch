@@ -123,9 +123,9 @@ int main(int argc, char** argv) {
     gripper_client.close_gripper(true);
     trajectory_client.move_joints_to({0.3, -1.31, -0.29, 2.64, 1.33, 0.0, 0.59, 0.69}, 1);
 
-    // // // Open gripper to restart dance routine
-    // ros::Duration(5).sleep();
-    // gripper_client.close_gripper(false);
+    // // Open gripper to restart dance routine
+    ros::Duration(5).sleep();
+    gripper_client.close_gripper(false);
 
     // Return 0 to indicate successful execution of the program.
     return 0;
