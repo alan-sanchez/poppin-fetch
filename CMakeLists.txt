@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   control_msgs
   geometry_msgs
   trajectory_msgs
-
+  Eigen3 REQUIRED
 )
 
 
@@ -44,6 +44,7 @@ catkin_package(
 include_directories(
   #include
   ${catkin_INCLUDE_DIRS}
+  SYSTEM ${EIGEN3_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -147,6 +148,7 @@ add_executable(la_chona_dance
   src/Footwork.cpp
   src/FollowTrajectoryClient.cpp
   src/GripperClient.cpp
+  src/MoveItClient.cpp
 )
 target_link_libraries(la_chona_dance
   ${catkin_LIBRARIES}
