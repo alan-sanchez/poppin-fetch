@@ -16,6 +16,9 @@
 // // Interface for managing the planning scene, including adding or removing collision objects
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 
+// // 
+// #include <moveit/
+
 /**
  * @brief Class for controlling mid-level operations of the arm and torso.
  */
@@ -31,12 +34,13 @@ public:
      * @param vel Maximum velocity scaling factor.
      * @return 0 on success, 1 on failure.
      */
-    int init_pose(double vel = 0.2);
+    int init_pose(std::vector<double> joint_values, double vel = 0.2);
 
 private:
     moveit::planning_interface::MoveGroupInterface* _move_group;
     moveit::planning_interface::PlanningSceneInterface _planning_scene;
-    std::string gripper_frame_;
+    std::string _gripper_frame;
+    std::vector<std::string> _joints;
 };
 
 #endif // MOVE_GROUP_CLIENT_H
