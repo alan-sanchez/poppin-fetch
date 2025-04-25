@@ -17,7 +17,7 @@
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 
 // // 
-// #include <moveit/
+#include <moveit_msgs/CollisionObject.h>
 
 /**
  * @brief Class for controlling mid-level operations of the arm and torso.
