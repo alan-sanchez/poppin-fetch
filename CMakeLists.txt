@@ -16,6 +16,9 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   trajectory_msgs
   Eigen3 REQUIRED
+  moveit_ros_planning
+  moveit_ros_planning_interface
+  tf2_ros
 )
 
 
@@ -31,7 +34,17 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   #INCLUDE_DIRS include
   LIBRARIES poppin_fetch
-  CATKIN_DEPENDS roscpp rospy std_msgs actionlib control_msgs geometry_msgs trajectory_msgs
+  CATKIN_DEPENDS 
+    roscpp 
+    rospy 
+    std_msgs 
+    actionlib 
+    control_msgs 
+    geometry_msgs 
+    trajectory_msgs
+    moveit_core
+    moveit_ros_planning_interface
+    tf2_ros
   #DEPENDS system_lib
 )
 
