@@ -16,7 +16,7 @@
 // // Interface for managing the planning scene, including adding or removing collision objects
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 
-// // 
+// // Pull the message definition for representing collision objects in the planning scene
 #include <moveit_msgs/CollisionObject.h>
 
 /**
@@ -41,6 +41,7 @@ private:
     moveit::planning_interface::PlanningSceneInterface _planning_scene;
     std::string _gripper_frame;
     std::vector<std::string> _joints;
+    moveit_msgs::CollisionObject _collision_object;
 };
 
 #endif // MOVE_GROUP_CLIENT_H
