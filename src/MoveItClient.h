@@ -19,6 +19,9 @@
 // // Pull the message definition for representing collision objects in the planning scene
 #include <moveit_msgs/CollisionObject.h>
 
+// // Include message type that represents the geometric shape of an object
+#include <shape_msgs/SolidPrimitive.h>
+
 /**
  * @brief Class for controlling mid-level operations of the arm and torso.
  */
@@ -42,6 +45,7 @@ private:
     std::string _gripper_frame;
     std::vector<std::string> _joints;
     moveit_msgs::CollisionObject _collision_object;
+    shape_msgs::SolidPrimitive _primitive;  
 };
 
 #endif // MOVE_GROUP_CLIENT_H
