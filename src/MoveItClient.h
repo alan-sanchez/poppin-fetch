@@ -22,6 +22,9 @@
 // // Include message type that represents the geometric shape of an object
 #include <shape_msgs/SolidPrimitive.h>
 
+// // Include Pose message type for box object
+#include <geometry_msgs/Pose.h>
+
 /**
  * @brief Class for controlling mid-level operations of the arm and torso.
  */
@@ -46,6 +49,7 @@ private:
     std::vector<std::string> _joints;
     moveit_msgs::CollisionObject _collision_object;
     shape_msgs::SolidPrimitive _primitive;  
+    geometry_msgs::Pose _box_pose;
 };
 
 #endif // MOVE_GROUP_CLIENT_H
