@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning
   moveit_ros_planning_interface
   tf2_ros
+  shape_msgs
 )
 
 
@@ -45,6 +46,7 @@ catkin_package(
     moveit_core
     moveit_ros_planning_interface
     tf2_ros
+    shape_msgs
   #DEPENDS system_lib
 )
 
