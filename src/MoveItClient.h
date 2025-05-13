@@ -47,6 +47,7 @@ private:
     moveit::planning_interface::PlanningSceneInterface _planning_scene;
     std::string _gripper_frame;
     std::vector<std::string> _joints;
+    std::vector<moveit_msgs::CollisionObject> _collision_objects;
     moveit_msgs::CollisionObject _collision_object;
     shape_msgs::SolidPrimitive _primitive;  
     geometry_msgs::Pose _box_pose;
