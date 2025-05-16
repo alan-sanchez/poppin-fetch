@@ -40,13 +40,13 @@ public:
      * @param vel Maximum velocity scaling factor.
      * @return 0 on success, 1 on failure.
      */
-    int init_pose(std::vector<double> joint_values, double vel = 0.2);
+    void init_pose(const std::vector<double>& joint_values, double vel = 0.2);
 
 private:
     moveit::planning_interface::MoveGroupInterface* _move_group;
     moveit::planning_interface::PlanningSceneInterface _planning_scene;
     std::string _gripper_frame;
-    std::vector<std::string> _joints;
+    std::vector<std::string> _joint_names;
     std::vector<moveit_msgs::CollisionObject> _collision_objects;
     moveit_msgs::CollisionObject _collision_object;
     shape_msgs::SolidPrimitive _primitive;  
