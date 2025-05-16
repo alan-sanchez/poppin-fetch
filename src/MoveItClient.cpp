@@ -12,19 +12,42 @@ MoveGroupClient::MoveGroupClient()
     _move_group = new moveit::planning_interface::MoveGroupInterface("arm_with_torso");
     _gripper_frame = "gripper_link";
 
-    // // TODO: Add collision objects to the planning scene
+    // // Add collision objects to the planning scene
+    _collision_object.header.frame_id = "base_link";
+    _collision_object.id = "base_frame";
 
+    // // 
+    _primitive.type = _primitive.BOX;
+    _primitive.dimensions = {0.2, 0.5, 0.05}; // X, Y, and Z dimension
+    
+    // // 
+    _box_pose.orientation.w = 1.0;
+    _box_pose.position.x = 0.15;
+    _box_pose.position.y = 0.00;
+    _box_pose.position.z = 0.375;
+
+    // // 
+    _collision_object.primitives.push_back(_primitive);
+    _collision_object.primitive_poses.push_back(_box_pose);
+    _collision_object.operation = _collision_object.ADD;
+    
     // // Define joint names
-    std::vector<std::string> _joints = {
+    std::vector<std::string> _joint_names = {
         "torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
         "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"
     };
 }
 
 
-int MoveGroupClient::init_pose(std::vector<double> joint_values, double vel)
+void MoveGroupClient::init_pose(const std::vector<double>& joint_values, double vel)
 {
-    
+    // _move_group->setJointValueTarget(_joint_names, joint_values);
+    std::cout<< "Check"<< std::endl;
+    std::map<std::string, double> joint_targets;
+    for (size_t i = 0; i < _joint_names.size(); ++i) {
+        joint_targets[_joint_names[i]] = joint_values[i];
+    }
+    _move_group->setJointValueTarget(joint_targets);
     // // List of joint values for initial position
     // std::vector<double> _joint_values = {0.27, 1.41, 0.30, -0.22, -2.25, -1.56, 1.80, -0.37};
 
@@ -43,5 +66,5 @@ int MoveGroupClient::init_pose(std::vector<double> joint_values, double vel)
     //         }
     //     }
     // }
-    return 1;
+    // return 1;
 }
