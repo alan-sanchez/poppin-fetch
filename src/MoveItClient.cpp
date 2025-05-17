@@ -41,22 +41,24 @@ MoveGroupClient::MoveGroupClient()
 
 void MoveGroupClient::init_pose(const std::vector<double>& joint_values, double vel)
 {
-    // _move_group->setJointValueTarget(_joint_names, joint_values);
-    std::cout<< "Check"<< std::endl;
     std::map<std::string, double> joint_targets;
     for (size_t i = 0; i < _joint_names.size(); ++i) {
         joint_targets[_joint_names[i]] = joint_values[i];
     }
     _move_group->setJointValueTarget(joint_targets);
-    // // List of joint values for initial position
-    // std::vector<double> _joint_values = {0.27, 1.41, 0.30, -0.22, -2.25, -1.56, 1.80, -0.37};
+    _move_group->setMaxVelocityScalingFactor(vel);
+
+    moveit::planning_interface::MoveGroupInterface::Plan plan;
+
+    bool success = (_move_group->plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+   
 
     // while (ros::ok()) {
     //     _move_group->setJointValueTarget(joints, _joint_values);
     //     _move_group->setMaxVelocityScalingFactor(vel);
 
     //     moveit::planning_interface::MoveGroupInterface::Plan plan;
-    //     bool success = (_move_group->plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    //     
 
     //     if (success) {
     //         moveit::planning_interface::MoveItErrorCode result = _move_group->execute(plan);
