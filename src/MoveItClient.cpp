@@ -11,6 +11,7 @@ MoveGroupClient::MoveGroupClient()
     // // Initialize move group interface
     _move_group = new moveit::planning_interface::MoveGroupInterface("arm_with_torso");
     _gripper_frame = "gripper_link";
+    ROS_INFO("Moveit Connected");
 
     // // Add collision objects to the planning scene
     _collision_object.header.frame_id = "base_link";
@@ -32,7 +33,13 @@ MoveGroupClient::MoveGroupClient()
     _collision_object.primitives.push_back(_primitive);
     _collision_object.primitive_poses.push_back(_box_pose);
     _collision_object.operation = _collision_object.ADD;
-    
+
+    // // 
+    _collision_objects.push_back(_collision_object);
+
+    // //     Add the collision to the planning scene    
+    _planning_scene.addCollisionObjects(_collision_objects);
+
     // // Define joint names
     std::vector<std::string> _joint_names = {
         "torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
@@ -47,20 +54,60 @@ void MoveGroupClient::init_pose(const std::vector<double>& joint_values, double 
     for (size_t i = 0; i < _joint_names.size(); ++i) {
         joint_targets[_joint_names[i]] = joint_values[i];
     }
+
     _move_group->setJointValueTarget(joint_targets);
     _move_group->setMaxVelocityScalingFactor(vel);
 
-    moveit::planning_interface::MoveGroupInterface::Plan plan;
+    // _move_group->
+    ROS_INFO("Made it here");
 
-    bool success = (_move_group->plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-   
-    //     if (success) {
-    //         moveit::planning_interface::MoveItErrorCode result = _move_group->execute(plan);
-    //         if (result == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
-    //             _planning_scene.removeCollisionObject("keepout");
-    //             return 0;
-    //         }
-    //     }
-    // }
-    // return 1;
+
+
+    moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+    ROS_INFO("declared my_plan");
+    // moveit::planning_interface::MoveItErrorCode result = _move_group->plan(my_plan);
+    // ROS_INFO("put plan in");
+    // std::cout<< result << std::endl;
+
+    // Plan the motion
+    bool success = (_move_group->plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    ROS_INFO("Planned the motion");
+    if (success) {
+        ROS_INFO("Planning successful, executing movement");
+        // Execute the planned motion
+        moveit::planning_interface::MoveItErrorCode result = _move_group->execute(my_plan);
+        
+        if (result == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+            ROS_INFO("Movement executed successfully");
+        } else {
+            ROS_ERROR("Failed to execute movement, error code: %d", result.val);
+        }
+    } else {
+        ROS_ERROR("Planning failed!");
+    }
+
+    // moveit::planning_interface::MoveItErrorCode result = _move_group->move();
+    // _move_group->move();
+
+
+//    // Create plan and execute with proper error handling
+//     moveit::planning_interface::MoveGroupInterface::Plan plan;
+//     ROS_INFO("Create plan message type");
+//     _move_group->setPlanningTime(5.0); // seconds
+//     bool success = (_move_group->plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    
+//     ROS_INFO("Got the plan");
+//     if (success) {
+//         ROS_INFO("Planning successful, executing movement");
+//         ROS_INFO("Before Execution");
+//         moveit::planning_interface::MoveItErrorCode result = _move_group->execute(plan);
+        
+//         if (result == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+//             ROS_INFO("Movement executed successfully");
+//         } else {
+//             ROS_ERROR("Failed to execute movement, error code: %d", result.val);
+//         }
+//     } else {
+//         ROS_ERROR("Planning failed!");
+//     }
 }
