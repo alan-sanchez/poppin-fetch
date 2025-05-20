@@ -41,46 +41,50 @@ MoveGroupClient::MoveGroupClient()
     _planning_scene.addCollisionObjects(_collision_objects);
 
     // // Define joint names
-    // std::vector<std::string> 
     _joint_names = {
         "torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
         "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"
     };
 }
 
-
+/**
+ * @brief Sends a joint goal to move the Fetch's arm and torso to the initial position.
+ * @param joint_values Vector containing target joint positions.
+ * @param vel Maximum velocity scaling factor (range: 0.0 to 1.0).
+ */
 void MoveGroupClient::init_pose(const std::vector<double>& joint_values, double vel)
 {
-    // // Define joint names
-    // std::vector<std::string> _joint_names = {
-    //     "torso_lift_joint", "shoulder_pan_joint", "shoulder_lift_joint", "upperarm_roll_joint",
-    //     "elbow_flex_joint", "forearm_roll_joint", "wrist_flex_joint", "wrist_roll_joint"
-    // };
-
+    // // Map joint names to their corresponding target values.
     std::map<std::string, double> joint_targets;
     for (size_t i = 0; i < _joint_names.size(); ++i) {
         joint_targets[_joint_names[i]] = joint_values[i];
     }
 
+    // // Set the target joint values for the motion planner.
     _move_group->setJointValueTarget(joint_targets);
+
+    // // Set the maximum velocity scaling factor to control the speed of the motion.
     _move_group->setMaxVelocityScalingFactor(vel);
 
-    // _move_group->
-    ROS_INFO("Made it here");
+    // // Log a message indicating that the joint targets have been set.
+    ROS_INFO("Joint targets set. Proceeding to plan the motion.");
 
+    // // Start an asynchronous spinner to process ROS callbacks in the background.
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
+    // // Create a plan object to store the planned trajectory.
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+
+    // // Plan the motion to the specified joint targets.
     bool success = (_move_group->plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-    std::cout << success << std::endl;
+
+    // // Log the result of the planning attempt.
     if (success) {
-        ROS_INFO("Modtion plan found!");
+        ROS_INFO("Motion plan found. Executing the plan asynchronously.");
+        // Execute the planned trajectory without blocking.
         _move_group->asyncExecute(my_plan);
-        // RCLCPP_INFO(move_group_node->get_logger(), "Motion plan found!");
-        // move_group->execute(my_plan);
     } else {
-        ROS_INFO("Motion plan failed");
-        // RCLCPP_ERROR(move_group_node->get_logger(), "Motion plan failed.");
-    }    
+        ROS_WARN("Motion planning failed. Unable to find a valid plan.");
+    }
 }
