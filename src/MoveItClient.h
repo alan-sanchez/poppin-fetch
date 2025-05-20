@@ -35,11 +35,11 @@ public:
      */
     MoveGroupClient();
 
-    /**
-     * @brief Sends a joint goal to move the Fetch's arm and torso to the initial position.
-     * @param vel Maximum velocity scaling factor.
-     * @return 0 on success, 1 on failure.
-     */
+   /**
+    * @brief Sends a joint goal to move the Fetch's arm and torso to the initial position.
+    * @param joint_values Vector containing target joint positions.
+    * @param vel Maximum velocity scaling factor (range: 0.0 to 1.0).
+    */
     void init_pose(const std::vector<double>& joint_values, double vel = 0.2);
 
 private:
