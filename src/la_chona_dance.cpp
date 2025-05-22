@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
     // // Move to initial dance pose using MoveIt to avoid collisions
     head_client.lookAt({1.0, 0.0, 1.2});
     gripper_client.close_gripper(false);
-    move_group_client.init_pose({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.9);
+    move_group_client.init_pose({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3);
 
     // // Implement a delay before the start of the dance routine. 
     ros::Duration(3.0).sleep();
