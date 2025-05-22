@@ -186,6 +186,7 @@ add_executable(bhangra_dance
   src/Footwork.cpp
   src/FollowTrajectoryClient.cpp
   src/GripperClient.cpp
+  src/MoveItClient.cpp
 )
 target_link_libraries(bhangra_dance
   ${catkin_LIBRARIES}
