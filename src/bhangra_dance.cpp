@@ -2,6 +2,8 @@
 #include "PointHeadClient.h"
 #include "Footwork.h"
 #include "FollowTrajectoryClient.h"
+#include "MoveItClient.h"
+
 
 /**
  * @brief Entry point of the `fetch_move_node` program.
@@ -27,9 +29,12 @@ int main(int argc, char** argv) {
     // // robot's arm, allowing it to move to specified joint positions through a trajectory action.
     FollowTrajectoryClient trajectory_client;
 
+    // // Initialize the MoveGroupClient to interface with MoveIt for motion planning and execution.
+    MoveGroupClient move_group_client;
+
     // // Begin initial dance pose
     head_client.lookAt({1.0, 0.0, 1.2}); 
-    trajectory_client.move_joints_to({0.3, -1.03, 1.07, -2.79, -1.65, 0.04, -1.26, -0.62}, 4); // duration = 4 sec
+    move_group_client.init_pose({0.3, -1.03, 1.07, -2.79, -1.65, 0.04, -1.26, -0.62}, .3); 
     ros::Duration(3.0).sleep();
 
     // // Get Fetch to look at camera and move arm to first dance pose
