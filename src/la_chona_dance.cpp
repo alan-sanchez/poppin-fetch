@@ -39,10 +39,10 @@ int main(int argc, char** argv) {
     // // Move to initial dance pose using MoveIt to avoid collisions
     head_client.lookAt({1.0, 0.0, 1.2});
     gripper_client.close_gripper(false);
-    move_group_client.init_pose({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3);
+    move_group_client.init_pose({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.5);
 
     // // Implement a delay before the start of the dance routine. 
-    ros::Duration(3.0).sleep();
+    ros::Duration(5.0).sleep();
 
     // // 8 basics moving forward and backward, while also moving the torso up and down
     for (int i=0; i<4; i++){
@@ -119,13 +119,13 @@ int main(int argc, char** argv) {
         trajectory_client.move_joints_to({0.30, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.29, "Left Turn");
     }
 
-    for (int i=0; i<4; i++){
-        trajectory_client.move_joints_to({0.28, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.4, "Backward");
-        trajectory_client.move_joints_to({0.30, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.4, "Backward");
-    }
+    // for (int i=0; i<4; i++){
+    //     trajectory_client.move_joints_to({0.28, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.4, "Backward");
+    //     trajectory_client.move_joints_to({0.30, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.4, "Backward");
+    // }
 
     // // Move the arm to grasp the sombrero then pull it off Fetch's head.
-    trajectory_client.move_joints_to({0.3, -1.33, 0.04, 2.64, 1.94, 0.0, 1.03, 0.69}, 1);
+    trajectory_client.move_joints_to({0.3, -0.2, -0.31, 3.11, 1.42, -0.03, 1.45, 0.01}, 1);
     gripper_client.close_gripper(true);
     trajectory_client.move_joints_to({0.3, -1.31, -0.29, 2.64, 1.33, 0.0, 0.59, 0.69}, 1);
 
