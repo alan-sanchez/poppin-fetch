@@ -69,7 +69,7 @@ void Footwork::linear_motion(bool forward, int num_publishes){
 void Footwork::turn(bool clockwise, int num_publishes, bool wide){
     // // Add forward motion for a wide turn if `wide` is true.
     if (wide == true){
-        _footwork_cmd.linear.x = 0.4;
+        _footwork_cmd.linear.x = 0.8;
     }
 
     // // Set the angular z velocity based on the `clockwise` parameter.
