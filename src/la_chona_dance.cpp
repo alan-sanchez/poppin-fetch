@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
     // Initialize the ROS node
     ros::init(argc, argv, "la_chona_dance");
 
-    // // // Create instances of `PointHeadClient`. This class provides functionality to interact
+    // // Create instances of `PointHeadClient`. This class provides functionality to interact
     // // with the robot's head controllers through ROS action servers.
     PointHeadClient head_client;
 
@@ -36,12 +36,12 @@ int main(int argc, char** argv) {
     // // Initialize the MoveGroupClient to interface with MoveIt for motion planning and execution.
     MoveGroupClient move_group_client;
 
-// // Move to initial dance pose using MoveIt to avoid collisions
+    // // Move to initial dance pose using MoveIt to avoid collisions
     head_client.lookAt({1.0, 0.0, 1.2});
     gripper_client.close_gripper(false);
     move_group_client.init_pose({0.3, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.5);
 
-    // // // Implement a delay before the start of the dance routine. 
+    // // Implement a delay before the start of the dance routine. 
     ros::Duration(5.0).sleep();
 
     // // 8 basics moving forward and backward, while also moving the torso up and down
@@ -66,7 +66,6 @@ int main(int argc, char** argv) {
     }
 
     // // Turn to the right and face the camera in a 45 degree angle, them move forward
-    // ros::Duration(0.1).sleep();
     trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
     trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
 
@@ -91,8 +90,6 @@ int main(int argc, char** argv) {
     ros::Duration(0.1).sleep();
     trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
     trajectory_client.move_joints_to({0.30, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Right Turn");
-    // trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.25, "Right Turn");
-
 
     for (int i=0; i<4; i++){
         trajectory_client.move_joints_to({0.28, -1.3, 1.2, 0.29, 1.86, -0.02, 1.29, 0.0}, 0.3, "Backward");
@@ -111,9 +108,7 @@ int main(int argc, char** argv) {
 
     // // Complete a wide right turn while moving the arm configuration
     base_cmd.turn(true, 35);
-    // ros::Duraiton(0.1).sleep();
     trajectory_client.move_joints_to({0.3,  -0.2, -0.52, 3.11, 1.23, -0.03, 1.2, 0.02}, 2.9, "Right Turn"); //
-    // ros::Duration(1).sleep();
 
     // // // Left turn to face the camera then move backward
     // for (int i=0; i<4; i++){
@@ -126,7 +121,6 @@ int main(int argc, char** argv) {
     //     trajectory_client.move_joints_to({0.30, -1.33, 0.21, 2.75, 1.84, 0.0, 1.03, 0.0}, 0.4, "Backward");
     // }
 
-    // ros::Duration(0.5).sleep();
     // // Move the arm to grasp the sombrero then pull it off Fetch's head.
     trajectory_client.move_joints_to({0.3, -0.2, -0.31, 3.11, 1.42, -0.03, 1.45, 0.01}, 1);
     gripper_client.close_gripper(true);
