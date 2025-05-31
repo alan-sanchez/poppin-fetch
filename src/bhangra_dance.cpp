@@ -35,20 +35,20 @@ int main(int argc, char** argv) {
     // // Begin initial dance pose
     head_client.lookAt({1.0, 0.0, 1.2}); 
     move_group_client.init_pose({0.3, -1.03, 1.07, -2.79, -1.65, 0.04, -1.26, -0.62}, .3); 
-    ros::Duration(3.0).sleep();
+    ros::Duration(8.0).sleep();
 
     // // Get Fetch to look at camera and move arm to first dance pose
     head_client.lookAt({0.0, -1.0, 1.2},0.5);
     trajectory_client.move_joints_to({0.3, -0.78, 0.37, -1.38, -1.65, 1.19, -1.27, -0.62}, 2); //, "Right Turn");
     head_client.lookAt({1.0, 0.0, 1.2},0.3);
-    ros::Duration(.1).sleep();
+    ros::Duration(.4).sleep();
 
     // // Beginning turn for dance
-    for (int i=0; i<3; i++){
+    for (int i=0; i<2; i++){
         base_cmd.turn(true,30,false);
         trajectory_client.move_joints_to({0.3, -1.46, 0.37, -0.65, -1.65, 1.19, -0.76, -0.19},2.4, "Right Turn");
         base_cmd.turn(false,30,false);
-        trajectory_client.move_joints_to({0.3, -0.68, 0.37, -1.38, -1.65, 1.19, -1.27, -0.62},1.8, "Left Turn");
+        trajectory_client.move_joints_to({0.3, -0.68, 0.37, -1.38, -1.65, 1.19, -1.27, -0.62},1.9, "Left Turn");
     }
 
     // // Arm motion only
@@ -62,12 +62,17 @@ int main(int argc, char** argv) {
 
     // // Hoping dance move
     for (int i=0; i<2; i++){
-        trajectory_client.move_joints_to({0.08, 1.24, 0.14, -1.47, 0.52, -0.03, 0.46, 0},0.5);
-        trajectory_client.move_joints_to({0.03, 1.12, 0.14, -1.55, 0.67, -0.03, 0.46, 0},0.5);
+        trajectory_client.move_joints_to({0.08, 1.24, 0.14, -1.47, 0.52, -0.03, 0.46, 0},0.8);
+        trajectory_client.move_joints_to({0.03, 1.12, 0.14, -1.55, 0.67, -0.03, 0.46, 0},0.8);
     }
 
     // // Finishing pose
     trajectory_client.move_joints_to({0.15, 0.79, 1.01, 1.16, -2.08, 2.56, 0.95, -0.95},2.5);
+
+    ros::Duration(5.0).sleep();
+
+    // // 
+    move_group_client.init_pose({0.4, -1.03, 1.07, -2.79, -1.65, 0.04, -1.26, -0.62}, .3);
 
     // // Return 0 to indicate successful execution of the program.
     return 0;
