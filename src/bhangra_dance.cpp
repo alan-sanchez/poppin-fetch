@@ -71,10 +71,10 @@ int main(int argc, char** argv) {
 
     ros::Duration(5.0).sleep();
 
-    // // 
+    // // Move robotic arm back to initial pose
     move_group_client.init_pose({0.4, -1.03, 1.07, -2.79, -1.65, 0.04, -1.26, -0.62}, .3);
 
-    // // Return 0 to indicate successful execution of the program.
+    // // Return 0 to indicate successful execution of the program
     return 0;
     
 }
