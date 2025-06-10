@@ -3,6 +3,7 @@
 #include "Footwork.h"
 #include "FollowTrajectoryClient.h"
 #include "GripperClient.h"
+#include "MoveItClient.h"
 
 /**
  * @brief Entry point of the `ante_up_dance` program.
