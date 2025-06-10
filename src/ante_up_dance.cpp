@@ -32,9 +32,13 @@ int main(int argc, char** argv) {
     // // robot's arm, allowing it to move to specified joint positions through a trajectory action.
     FollowTrajectoryClient trajectory_client;
 
+    // // Initialize the MoveGroupClient to interface with MoveIt for motion planning and execution.
+    MoveGroupClient move_group_client;
+
     // // Begin initial dance pose
     head_client.lookAt({1.0, -0.5, 1.2},1.2);
-    trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 2);
+    // trajectory_client.move_joints_to({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 2);
+    move_group_client.init_pose({.35, 1.32, 1.40, -0.2, 1.72, 0.0, 1.66, 0.0}, 0.5);
     ros::Duration(1.0).sleep();
 
 
