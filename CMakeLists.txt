@@ -211,6 +211,7 @@ add_executable(ante_up_dance
   src/Footwork.cpp
   src/FollowTrajectoryClient.cpp
   src/GripperClient.cpp
+  src/MoveItClient.cpp
 )
 target_link_libraries(ante_up_dance
   ${catkin_LIBRARIES}
